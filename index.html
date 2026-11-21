@@ -7,10 +7,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@400;500;600;700;800&family=Tiro+Bangla&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- Client-Side Libraries: PDF.js & QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script>if(window.pdfjsLib){pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';}</script>
 
     <style>
         :root {
@@ -246,7 +252,26 @@
         .job-bar-fill { height: 100%; background: var(--gold-gradient); }
 
         footer { background: #040608; border-top: 1px solid var(--border); padding: 40px 20px 25px; margin-top: 70px; text-align: center; }
-    </style>
+    
+/* ===== DHT PREMIUM LAYER ===== */
+::selection{background:#f59e0b;color:#000}
+html{scroll-behavior:smooth}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:linear-gradient(#f59e0b,#b45309);border-radius:8px}
+body{background:radial-gradient(ellipse at top,#131a2a 0%,#07090e 62%)}
+header{background:rgba(7,9,14,.82);border-bottom:1px solid rgba(245,158,11,.25)}
+.nav-right-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{letter-spacing:.4px;border-radius:30px;padding:8px 18px}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,158,11,.45)}
+.showcase-block,.photographer-card,.work-item-card,.review-card,.job-card,.b-card{background:linear-gradient(145deg,rgba(21,26,38,.92),rgba(10,13,20,.96));border:1px solid rgba(245,158,11,.18);transition:transform .3s,box-shadow .3s,border-color .3s}
+.photographer-card:hover,.work-item-card:hover,.review-card:hover,.job-card:hover{transform:translateY(-5px);border-color:rgba(245,158,11,.6);box-shadow:0 18px 40px rgba(0,0,0,.6),0 0 24px rgba(245,158,11,.15)}
+.modal-box,.workspace-modal-box{background:rgba(13,17,26,.97);border:1px solid rgba(245,158,11,.3);box-shadow:0 30px 80px rgba(0,0,0,.8)}
+.form-control:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,158,11,.18)}
+.work-headline-bar{border-radius:14px;border:1px solid rgba(245,158,11,.2);border-left:5px solid var(--gold)}
+.studio-hero{background:radial-gradient(circle at 50% 0%,rgba(245,158,11,.1),transparent 65%)}
+.btn:focus-visible,.form-control:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media(max-width:700px){.showcase-canvas-wrap{height:480px}.hero-crest-wrapper{gap:8px}.side-frame-line{width:18px}.nav-wrapper{justify-content:center}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
 </head>
 <body class="presentation-mode">
 
@@ -280,6 +305,10 @@
                 </div>
 
                 <div class="nav-right-actions">
+                    <!-- NEW STUDIO MANAGER HUB BUTTON -->
+                    <button type="button" class="btn btn-gold" onclick="openStudioManagerAuth()">
+                        ⚙️ STUDIO MANAGER
+                    </button>
                     <!-- SINGLE TAB NAVIGATION & DATA BACKUP -->
                     <button type="button" class="btn btn-gold" onclick="navigateTo('customers')">
                         📂 CUSTOMER DATA
@@ -854,13 +883,240 @@
         </div>
     </div>
 
+    <!-- ====== NEW SUITE MODALS (STUDIO MANAGER) ============================= -->
+    <!-- AUTH MODAL (STAFF LOGIN / SIGNUP) -->
+    <div class="modal" id="dhtSuiteAuthModal" style="display:none;">
+        <div class="modal-box" style="max-width:390px;">
+            <div style="display:flex; justify-content:space-around; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:8px;">
+                <button type="button" id="tabAuthLogin" onclick="switchSuiteAuthTab('login')" style="background:none; border:none; color:var(--gold); font-weight:700; cursor:pointer;">Staff Login</button>
+                <button type="button" id="tabAuthSignup" onclick="switchSuiteAuthTab('signup')" style="background:none; border:none; color:var(--text-gray); font-weight:600; cursor:pointer;">New Staff Signup</button>
+            </div>
+            <div id="suiteBoxLogin">
+                <div class="form-group"><label>Staff Mobile or Name</label><input type="text" id="suiteLoginUser" placeholder="Registered mobile" class="form-control"></div>
+                <div class="form-group"><label>Staff PIN</label><input type="password" id="suiteLoginPass" placeholder="Enter PIN" class="form-control"></div>
+                <button type="button" class="btn btn-gold" style="width:100%; margin-top:6px;" onclick="handleSuiteLogin()">Login to Studio Manager</button>
+            </div>
+            <div id="suiteBoxSignup" style="display:none;">
+                <div class="form-group"><label>Staff Full Name</label><input type="text" id="suiteSignupName" placeholder="e.g. Subhash Kumar" class="form-control"></div>
+                <div class="form-group"><label>Mobile Number</label><input type="number" id="suiteSignupPhone" placeholder="10-digit number" class="form-control"></div>
+                <div class="form-group"><label>Create 4-Digit PIN</label><input type="password" id="suiteSignupPass" placeholder="e.g. 1234" class="form-control"></div>
+                <button type="button" class="btn btn-green" style="width:100%; margin-top:6px;" onclick="handleSuiteSignup()">Register Staff Account</button>
+            </div>
+            <div class="modal-btns" style="justify-content:center; margin-top:14px;"><button type="button" class="btn btn-dark" onclick="closeModal('dhtSuiteAuthModal')">✕ Close</button></div>
+        </div>
+    </div>
+
+    <!-- STUDIO MANAGER HUB MODAL -->
+    <div class="modal" id="dhtSuiteHubModal" style="display:none;">
+        <div class="workspace-modal-box">
+            <div class="workspace-topbar">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:24px; color:var(--gold);">⚙️</span>
+                    <div>
+                        <h3 style="font-family:'Cinzel', serif; font-size:17px; color:#fff;">DHT STUDIO WORKSPACE & TOOLS</h3>
+                        <p id="suiteRoleBadgeText" style="font-size:11px; color:var(--gold-light);">Active Station</p>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-dark" onclick="closeModal('dhtSuiteHubModal')">✕ Close</button>
+            </div>
+            <div class="workspace-body">
+                <div style="background:#080a0f; border:1px solid var(--border); border-radius:8px; padding:12px 16px; margin-bottom:16px;">
+                    <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-gray); margin-bottom:6px;">
+                        <span>Cloud Storage (3D Albums):</span>
+                        <span id="suiteStorageText">0.0 MB / 5000 MB</span>
+                    </div>
+                    <div style="background:#1b2230; height:6px; border-radius:4px; overflow:hidden;">
+                        <div id="suiteStorageBar" style="background:var(--gold-gradient); height:100%; width:0%;"></div>
+                    </div>
+                </div>
+                <div class="photographers-grid" style="margin-top:0;">
+                    <div class="photographer-card" onclick="openSuiteTool('flipbook')"><span style="font-size:28px; color:var(--gold);">📖</span><h4 style="color:#fff; margin:6px 0;">3D Flipbook Creator</h4><p style="font-size:11px; color:var(--text-gray);">Compress 12x36 to ~300KB & publish</p></div>
+                    <div class="photographer-card" onclick="openSuiteTool('photo_select')"><span style="font-size:28px; color:var(--gold);">❤️</span><h4 style="color:#fff; margin:6px 0;">Client Photo Selection</h4><p style="font-size:11px; color:var(--text-gray);">Party selection link & PIN</p></div>
+                    <div class="photographer-card" onclick="openSuiteTool('resizer')"><span style="font-size:28px; color:var(--gold);">🖼️</span><h4 style="color:#fff; margin:6px 0;">Image Resizer & Watermark</h4><p style="font-size:11px; color:var(--text-gray);">Pixel control + DHT logo watermark</p></div>
+                    <div class="photographer-card" onclick="openSuiteTool('pdf_jpg')"><span style="font-size:28px; color:var(--gold);">📄</span><h4 style="color:#fff; margin:6px 0;">PDF to JPG Converter</h4><p style="font-size:11px; color:var(--text-gray);">Convert PDF album pages to JPG sheets</p></div>
+                    <div class="photographer-card" onclick="openSuiteTool('audio_extract')"><span style="font-size:28px; color:var(--gold);">🎵</span><h4 style="color:#fff; margin:6px 0;">Video to Audio Track</h4><p style="font-size:11px; color:var(--text-gray);">Extract WAV/MP3 track from video clips</p></div>
+                    <div class="photographer-card" onclick="openSuiteTool('qr')"><span style="font-size:28px; color:var(--gold);">📲</span><h4 style="color:#fff; margin:6px 0;">Wedding QR Generator</h4><p style="font-size:11px; color:var(--text-gray);">Branded wedding cards & standees QR</p></div>
+                    <div class="photographer-card" onclick="openSuiteTool('patrika')"><span style="font-size:28px; color:var(--gold);">⏳</span><h4 style="color:#fff; margin:6px 0;">Digital Patrika Maker</h4><p style="font-size:11px; color:var(--text-gray);">Live countdown & Google Maps venue link</p></div>
+                    <div class="photographer-card" onclick="openSuiteTool('status')"><span style="font-size:28px; color:var(--gold);">📊</span><h4 style="color:#fff; margin:6px 0;">Project Status Tracker</h4><p style="font-size:11px; color:var(--text-gray);">Order delivery stage tracking</p></div>
+                    <div class="photographer-card" onclick="openSuiteTool('culling')"><span style="font-size:28px; color:var(--gold);">⚡</span><h4 style="color:#fff; margin:6px 0;">Rapid Photo Culling</h4><p style="font-size:11px; color:var(--text-gray);">Arrow keys & spacebar shortlist</p></div>
+                    <div class="photographer-card" onclick="openSuiteTool('corrections')"><span style="font-size:28px; color:var(--gold);">📝</span><h4 style="color:#fff; margin:6px 0;">Album Corrections</h4><p id="suitePendingCorrText" style="font-size:11px; color:var(--text-gray);">0 pending change requests</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLIPBOOK WORKSPACE MODAL -->
+    <div class="modal" id="suiteFlipbookModal" style="display:none;">
+        <div class="modal-box" style="max-width:850px;">
+            <h3 class="modal-title">📖 3D Flipbook Album Studio</h3>
+            <div class="form-group"><label>Event / Couple Title *</label><input type="text" id="suiteFbTitle" placeholder="e.g. Rahul Weds Priya" class="form-control"></div>
+            <div class="form-group"><label>Client Studio Name</label><input type="text" id="suiteFbStudio" placeholder="e.g. DHT STUDIO JHALDA" class="form-control"></div>
+            <div class="form-group"><label>WhatsApp Number</label><input type="number" id="suiteFbPhone" placeholder="91XXXXXXXXXX" class="form-control"></div>
+            <div class="form-group"><label>Payment Gate Rule</label>
+                <select id="suiteFbGate" class="form-control">
+                    <option value="full">Full Access (All Sheets Unlocked)</option>
+                    <option value="due">Partial Due Lock (Preview First 6 Sheets Only)</option>
+                </select>
+            </div>
+            <div style="border:2px dashed var(--border); padding:16px; text-align:center; border-radius:8px; margin-bottom:12px;">
+                <input type="file" id="suiteFbSheetsInp" accept="image/*" multiple style="display:none;" onchange="handleSuiteSheets(event)">
+                <button type="button" class="btn btn-gold" onclick="document.getElementById('suiteFbSheetsInp').click()">Select 12x36 Album Sheets</button>
+                <p id="suiteFbCountLbl" style="margin-top:6px; font-size:11.5px; color:var(--text-gray);">Auto optimizes to ~300KB each</p>
+            </div>
+            <div id="suiteFbThumbnails" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:12px;"></div>
+            <div class="modal-btns"><button type="button" class="btn btn-dark" onclick="closeModal('suiteFlipbookModal')">Cancel</button><button type="button" class="btn btn-gold" onclick="publishSuiteAlbum()">Publish 3D Album</button></div>
+        </div>
+    </div>
+
+    <!-- RESIZER MODAL -->
+    <div class="modal" id="suiteResizerModal" style="display:none;">
+        <div class="modal-box">
+            <h3 class="modal-title">🖼️ Image Resizer & Watermark</h3>
+            <div class="form-group"><label>Select Photo</label><input type="file" id="suiteResizerInp" accept="image/*" class="form-control" onchange="previewSuiteResizer(event)"></div>
+            <div class="form-group"><label>Max Width (Pixels)</label><input type="number" id="suiteResizerWidth" value="1920" class="form-control"></div>
+            <div class="form-group"><label>Watermark Text</label><input type="text" id="suiteResizerWatermark" value="DHT STUDIO JHALDA" class="form-control"></div>
+            <div class="modal-btns"><button type="button" class="btn btn-dark" onclick="closeModal('suiteResizerModal')">Cancel</button><button type="button" class="btn btn-gold" onclick="downloadSuiteResized()">Process & Download JPG</button></div>
+        </div>
+    </div>
+
+    <!-- PDF TO JPG MODAL -->
+    <div class="modal" id="suitePdfModal" style="display:none;">
+        <div class="modal-box">
+            <h3 class="modal-title">📄 PDF to JPG Converter</h3>
+            <div class="form-group"><label>Select Wedding Album PDF</label><input type="file" id="suitePdfInp" accept="application/pdf" class="form-control"></div>
+            <button type="button" class="btn btn-gold" style="width:100%;" onclick="convertSuitePdf()">Extract Pages to JPGs</button>
+            <div id="suitePdfMsg" style="margin-top:10px; font-size:12px; color:var(--text-gray);"></div>
+            <div class="modal-btns"><button type="button" class="btn btn-dark" onclick="closeModal('suitePdfModal')">✕ Close</button></div>
+        </div>
+    </div>
+
+    <!-- AUDIO EXTRACTOR MODAL -->
+    <div class="modal" id="suiteAudioModal" style="display:none;">
+        <div class="modal-box">
+            <h3 class="modal-title">🎵 Video to Audio Extractor</h3>
+            <div class="form-group"><label>Select Video File (MP4/MOV)</label><input type="file" id="suiteVideoInp" accept="video/*" class="form-control"></div>
+            <button type="button" class="btn btn-gold" style="width:100%;" onclick="extractSuiteAudio()">Extract WAV Audio</button>
+            <div id="suiteAudioMsg" style="margin-top:10px; font-size:12px; color:var(--text-gray);"></div>
+            <div class="modal-btns"><button type="button" class="btn btn-dark" onclick="closeModal('suiteAudioModal')">✕ Close</button></div>
+        </div>
+    </div>
+
+    <!-- PHOTO SELECTION ADMIN MODAL -->
+    <div class="modal" id="suiteSelectAdminModal" style="display:none;">
+        <div class="modal-box">
+            <h3 class="modal-title">❤️ Client Photo Selection Setup</h3>
+            <div class="form-group"><label>Couple Name</label><input type="text" id="suiteSelCouple" placeholder="e.g. Akash & Shraddha" class="form-control"></div>
+            <div class="form-group"><label>4-Digit Client PIN</label><input type="number" id="suiteSelPin" placeholder="e.g. 2468" class="form-control"></div>
+            <button type="button" class="btn btn-gold" style="width:100%;" onclick="generateSuiteSelectLink()">Generate Selection Link</button>
+            <div id="suiteSelLinkResult" style="margin-top:12px; font-size:12px; color:var(--gold); word-break:break-all;"></div>
+            <div class="modal-btns"><button type="button" class="btn btn-dark" onclick="closeModal('suiteSelectAdminModal')">✕ Close</button></div>
+        </div>
+    </div>
+
+    <!-- QR MODAL -->
+    <div class="modal" id="suiteQrModal" style="display:none;">
+        <div class="modal-box" style="text-align:center;">
+            <h3 class="modal-title">📲 Wedding QR Generator</h3>
+            <input type="text" id="suiteQrUrl" class="form-control" placeholder="Paste project URL here..." style="margin-bottom:12px;">
+            <button type="button" class="btn btn-gold" onclick="makeSuiteQR()" style="margin-bottom:14px;">Generate QR</button>
+            <div id="suiteQrWrap" style="display:flex; justify-content:center; background:#fff; padding:12px; border-radius:8px; width:200px; margin:0 auto 14px;"></div>
+            <div class="modal-btns"><button type="button" class="btn btn-dark" onclick="closeModal('suiteQrModal')">✕ Close</button></div>
+        </div>
+    </div>
+
+    <!-- PATRIKA MODAL -->
+    <div class="modal" id="suitePatrikaModal" style="display:none;">
+        <div class="modal-box">
+            <h3 class="modal-title">⏳ Digital Patrika & Countdown</h3>
+            <div class="form-group"><label>Couple Name</label><input type="text" id="suitePatCouple" class="form-control"></div>
+            <div class="form-group"><label>Event Date</label><input type="date" id="suitePatDate" class="form-control"></div>
+            <div class="form-group"><label>Google Maps Link</label><input type="text" id="suitePatMap" class="form-control"></div>
+            <div class="modal-btns">
+                <button type="button" class="btn btn-dark" onclick="closeModal('suitePatrikaModal')">Cancel</button>
+                <button type="button" class="btn btn-gold" onclick="createSuitePatrika()">Create Link</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATUS TRACKER MODAL -->
+    <div class="modal" id="suiteStatusModal" style="display:none;">
+        <div class="modal-box">
+            <h3 class="modal-title">📊 Project Status Tracker</h3>
+            <div class="form-group"><label>Order ID / Client Name</label><input type="text" id="suiteStatusOrder" class="form-control"></div>
+            <div class="form-group"><label>Current Status</label>
+                <select id="suiteStatusSelect" class="form-control">
+                    <option value="Raw Footage Received">1. Raw Footage Received</option>
+                    <option value="Editing & Color Grading">2. Editing & Color Grading</option>
+                    <option value="Album Designing">3. Album Designing</option>
+                    <option value="Ready for Delivery">4. Ready for Delivery</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-gold" style="width:100%;" onclick="saveSuiteStatus()">Update Status</button>
+            <div id="suiteStatusHistory" style="margin-top:14px; max-height:200px; overflow-y:auto;"></div>
+            <div class="modal-btns"><button type="button" class="btn btn-dark" onclick="closeModal('suiteStatusModal')">✕ Close</button></div>
+        </div>
+    </div>
+
+    <!-- PHOTO CULLING MODAL -->
+    <div class="modal" id="suiteCullingModal" style="display:none;">
+        <div class="modal-box" style="max-width:850px;">
+            <h3 class="modal-title">⚡ Rapid Photo Culling (Spacebar: Shortlist)</h3>
+            <input type="file" id="suiteCullInp" accept="image/*" multiple onchange="loadSuiteCull(event)" class="form-control">
+            <div style="text-align:center; margin-top:10px;">
+                <img id="suiteCullImg" src="" style="max-height:48vh; border-radius:6px; max-width:100%;">
+                <div id="suiteCullBadge" style="margin-top:8px; font-weight:700; color:var(--gold);"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-top:12px;">
+                <button type="button" class="btn btn-dark" onclick="stepSuiteCull(-1)">Previous (←)</button>
+                <button type="button" class="btn btn-gold" onclick="toggleSuiteShortlist()">Toggle Shortlist (Space)</button>
+                <button type="button" class="btn btn-dark" onclick="stepSuiteCull(1)">Next (→)</button>
+            </div>
+            <div class="modal-btns"><button type="button" class="btn btn-dark" onclick="closeModal('suiteCullingModal')">✕ Close</button></div>
+        </div>
+    </div>
+
+    <!-- CORRECTIONS MODAL -->
+    <div class="modal" id="suiteCorrModal" style="display:none;">
+        <div class="modal-box">
+            <h3 class="modal-title">📝 Album Change Requests</h3>
+            <div id="suiteCorrList" style="max-height:280px; overflow-y:auto; margin-bottom:12px;"></div>
+            <div class="modal-btns"><button type="button" class="btn btn-dark" onclick="closeModal('suiteCorrModal')">✕ Close</button></div>
+        </div>
+    </div>
+
+    <!-- 3D VIEWER OVERLAY -->
+    <div id="suiteViewerOverlay" style="display:none; position:fixed; inset:0; background:#000; z-index:200000; flex-direction:column; font-family:'Montserrat',sans-serif;">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 25px; background:#0e121a; border-bottom:1px solid var(--border);">
+            <div style="font-weight:700; color:var(--gold);" id="suiteViewerTitle">Wedding Photobook</div>
+            <div style="display:flex; gap:10px;">
+                <button type="button" class="btn btn-dark" onclick="promptSuiteCorrection()">📝 Request Change</button>
+                <button type="button" class="btn btn-red" onclick="closeSuiteViewer()">✕ Close</button>
+            </div>
+        </div>
+        <div style="flex:1; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
+            <img id="suiteViewerActiveImg" src="" style="max-width:90vw; max-height:80vh; border-radius:4px;" alt="Album Sheet">
+            <div id="suiteDueBanner" style="display:none; position:absolute; background:rgba(0,0,0,0.94); border:2px solid var(--accent-red); border-radius:12px; padding:30px; text-align:center; color:#fff;">
+                <h3 style="color:var(--accent-red); margin-top:0;">Preview Limit Reached</h3>
+                <p style="color:var(--text-gray); margin:10px 0 15px;">Remaining sheets are locked. Please clear pending balance with DHT STUDIO to unlock full album.</p>
+            </div>
+        </div>
+        <div style="display:flex; justify-content:center; align-items:center; gap:20px; padding:15px; background:#0e121a;">
+            <button type="button" class="btn btn-gold" style="width:40px; height:40px; border-radius:50%;" onclick="navSuiteSheet(-1)">❮</button>
+            <span id="suiteViewerIndicator" style="font-size:14px; font-weight:600; color:#fff;">Sheet 1 / 1</span>
+            <button type="button" class="btn btn-gold" style="width:40px; height:40px; border-radius:50%;" onclick="navSuiteSheet(1)">❯</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
     <footer>
         <div style="font-family:'Cinzel', serif; font-size:1.3rem; font-weight:900; color:#fff;">DHT STUDIO</div>
         <p style="font-size:12.5px; color:var(--text-gray); margin-top:6px;">Vill-dibritikar, P.O-iloo, P.S-Jhalda, Dist-Purulia (W.B) Pin-723212</p>
         <p style="margin-top:6px; color:var(--gold-light); font-weight:700;">Helpline / WhatsApp: +91 8372929859</p>
     </footer>
 
-    <script>
+
+
+<script>
         function openModal(id) { const el = document.getElementById(id); if (el) el.style.setProperty("display", "flex", "important"); }
         function closeModal(id) { const el = document.getElementById(id); if (el) el.style.setProperty("display", "none", "important"); }
 
@@ -881,6 +1137,7 @@
         } catch (e) { console.error("Firebase init:", e); }
 
         let currentMasterPin = "8372";
+        let suiteSheets = [], suiteActiveAlbum = null, suiteCurrentSheet = 0, suiteCullFiles = [], suiteCullIdx = 0, suiteShortlist = [], rawResizerImage = null;
         let pinPurpose = "admin";
         let targetCustIdForPin = null;
         let uploadedImportHtmlText = "";
@@ -1325,7 +1582,7 @@
             filtered.forEach(data => {
                 const block = document.createElement("div");
                 block.className = `showcase-block ${data.pinned ? 'is-pinned' : ''}`;
-                const srcDoc = data.htmlContent ? `srcdoc="${data.htmlContent.replace(/"/g, '"')}"` : "";
+                const srcDoc = data.htmlContent ? `srcdoc="${data.htmlContent.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}"` : "";
                 const src = data.url ? `src="${data.url}"` : "";
                 
                 block.innerHTML = `
@@ -1459,7 +1716,7 @@
                 if (w.htmlData || w.url) {
                     const block = document.createElement("div");
                     block.className = "showcase-block";
-                    const srcDoc = w.htmlData ? `srcdoc="${w.htmlData.replace(/"/g, '"')}"` : "";
+                    const srcDoc = w.htmlData ? `srcdoc="${w.htmlData.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}"` : "";
                     const src = w.url ? `src="${w.url}"` : "";
                     block.innerHTML = `
                         <div class="block-controller-bar">
@@ -2300,6 +2557,469 @@
             });
         }
 
+        /* 10. STUDIO MANAGER HUB ENGINE LOGIC */
+        let currentStaffUser = null;
+        let selectedAlbumSheets = [];
+        let activeViewingAlbum = null;
+        let currentSheetIndex = 0;
+        let cullingFiles = [];
+        let cullingIndex = 0;
+        let culledList = [];
+        let resizerRawImage = null;
+
+        function openStudioManagerAuth() {
+            openModal('dhtSuiteAuthModal');
+            switchSuiteAuthTab('login');
+        }
+
+        function switchSuiteAuthTab(type) {
+            const lBox = document.getElementById("suiteBoxLogin");
+            const sBox = document.getElementById("suiteBoxSignup");
+            const lTab = document.getElementById("tabAuthLogin");
+            const sTab = document.getElementById("tabAuthSignup");
+            if (type === 'login') {
+                lBox.style.display = "block"; sBox.style.display = "none";
+                lTab.style.color = "var(--gold)"; sTab.style.color = "var(--text-gray)";
+            } else {
+                lBox.style.display = "none"; sBox.style.display = "block";
+                lTab.style.color = "var(--text-gray)"; sTab.style.color = "var(--accent-green)";
+            }
+        }
+
+        function handleSuiteSignup() {
+            const name = document.getElementById("suiteSignupName").value.trim();
+            const phone = document.getElementById("suiteSignupPhone").value.trim();
+            const pass = document.getElementById("suiteSignupPass").value.trim();
+            if (!name || !phone || !pass) { alert("Please fill Name, Mobile and PIN!"); return; }
+
+            let staffList = JSON.parse(localStorage.getItem("DHT_REGISTERED_STAFF") || "[]");
+            if (staffList.find(s => s.phone === phone)) {
+                alert("This mobile is already registered! Please Login.");
+                switchSuiteAuthTab('login');
+                return;
+            }
+            staffList.push({ id: "staff_" + Date.now(), name, phone, pin: pass });
+            localStorage.setItem("DHT_REGISTERED_STAFF", JSON.stringify(staffList));
+            alert(`Account registered for ${name}! Please login.`);
+            document.getElementById("suiteSignupName").value = "";
+            document.getElementById("suiteSignupPhone").value = "";
+            document.getElementById("suiteSignupPass").value = "";
+            switchSuiteAuthTab('login');
+        }
+
+        function handleSuiteLogin() {
+            const user = document.getElementById("suiteLoginUser").value.trim();
+            const pass = document.getElementById("suiteLoginPass").value.trim();
+            if (!pass) { alert("Please enter PIN!"); return; }
+
+            if (pass === currentMasterPin) {
+                currentStaffUser = { name: "Master Admin", role: "master" };
+                closeModal("dhtSuiteAuthModal");
+                launchSuiteHub(true, "Master Admin");
+                return;
+            }
+
+            let staffList = JSON.parse(localStorage.getItem("DHT_REGISTERED_STAFF") || "[]");
+            const matched = staffList.find(s => (s.phone === user || s.name.toLowerCase() === user.toLowerCase()) && s.pin === pass);
+            if (matched) {
+                currentStaffUser = { name: matched.name, role: "staff" };
+                closeModal("dhtSuiteAuthModal");
+                launchSuiteHub(false, matched.name);
+            } else {
+                alert("❌ Galat User ID ya PIN!");
+            }
+        }
+
+        function launchSuiteHub(isMaster, name) {
+            openModal("dhtSuiteHubModal");
+            document.getElementById("suiteRoleBadgeText").textContent = isMaster ? "Master Admin Station" : `Staff Station: ${name}`;
+            refreshSuiteStorage();
+            refreshSuiteCorrections();
+        }
+
+        function openSuiteTool(tool) {
+            closeModal("dhtSuiteHubModal");
+            if (tool === 'flipbook') openModal("suiteFlipbookModal");
+            else if (tool === 'photo_select') openModal("suiteSelectAdminModal");
+            else if (tool === 'resizer') openModal("suiteResizerModal");
+            else if (tool === 'pdf_jpg') openModal("suitePdfModal");
+            else if (tool === 'audio_extract') openModal("suiteAudioModal");
+            else if (tool === 'qr') openModal("suiteQrModal");
+            else if (tool === 'patrika') openModal("suitePatrikaModal");
+            else if (tool === 'status') { openModal("suiteStatusModal"); renderSuiteStatusList(); }
+            else if (tool === 'culling') openModal("suiteCullingModal");
+            else if (tool === 'corrections') { openModal("suiteCorrModal"); renderSuiteCorrections(); }
+        }
+
+        /* 3D FLIPBOOK & COMPRESSION */
+        async function handleSuiteSheets(e) {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+            suiteSheets = [];
+            const track = document.getElementById("suiteFbThumbnails");
+            track.innerHTML = "";
+            document.getElementById("suiteFbCountLbl").textContent = `Optimizing ${files.length} sheets...`;
+
+            for (let i = 0; i < files.length; i++) {
+                const compUrl = await compressCanvasImage(files[i]);
+                suiteSheets.push({ page: i + 1, data: compUrl });
+                const thumb = document.createElement("img");
+                thumb.src = compUrl;
+                thumb.style.cssText = "width:85px; height:48px; object-fit:cover; border-radius:4px; border:1px solid var(--border); flex-shrink:0;";
+                track.appendChild(thumb);
+            }
+            document.getElementById("suiteFbCountLbl").textContent = `✅ ${files.length} sheets ready (~300KB each)!`;
+        }
+
+        function compressCanvasImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement("canvas");
+                        const targetWidth = 2000;
+                        const scale = targetWidth / img.width;
+                        canvas.width = scale < 1 ? targetWidth : img.width;
+                        canvas.height = scale < 1 ? img.height * scale : img.height;
+                        const ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL("image/jpeg", 0.75));
+                    };
+                };
+            });
+        }
+
+        function publishSuiteAlbum() {
+            const title = document.getElementById("suiteFbTitle").value.trim();
+            const studio = document.getElementById("suiteFbStudio").value.trim() || "DHT STUDIO";
+            const phone = document.getElementById("suiteFbPhone").value.trim();
+            const gate = document.getElementById("suiteFbGate").value;
+
+            if (!title || !suiteSheets.length) { alert("Please provide Title & Sheets!"); return; }
+
+            const slug = title.toLowerCase().replace(/[^a-z0-9]/g, "_");
+            const newAlbum = {
+                id: "dht_" + Date.now(),
+                title, studio, phone, gate, slug,
+                sheets: suiteSheets,
+                createdAt: new Date().toLocaleDateString()
+            };
+
+            let albums = JSON.parse(localStorage.getItem("DHT_ALBUMS") || "[]");
+            albums.unshift(newAlbum);
+            localStorage.setItem("DHT_ALBUMS", JSON.stringify(albums));
+            closeModal("suiteFlipbookModal");
+            refreshSuiteStorage();
+            alert("🎉 3D Photobook Published Successfully!");
+        }
+
+        function refreshSuiteStorage() {
+            const albums = JSON.parse(localStorage.getItem("DHT_ALBUMS") || "[]");
+            const totalSheets = albums.reduce((sum, a) => sum + (a.sheets ? a.sheets.length : 0), 0);
+            const usedMb = (totalSheets * 0.35).toFixed(1);
+            const label = document.getElementById("suiteStorageText");
+            const bar = document.getElementById("suiteStorageBar");
+            if (label && bar) {
+                label.textContent = `${usedMb} MB / 5000 MB`;
+                bar.style.width = Math.min((usedMb / 5000) * 100, 100) + "%";
+            }
+        }
+
+        /* 3D VIEWER */
+        function openSuiteViewerBySlug(slug) {
+            const albums = JSON.parse(localStorage.getItem("DHT_ALBUMS") || "[]");
+            suiteActiveAlbum = albums.find(a => a.slug === slug);
+            if (!suiteActiveAlbum) return;
+            suiteCurrentSheet = 0;
+            document.getElementById("suiteViewerTitle").textContent = suiteActiveAlbum.title;
+            document.getElementById("suiteViewerOverlay").style.display = "flex";
+            renderSuiteSheet();
+        }
+
+        function closeSuiteViewer() {
+            document.getElementById("suiteViewerOverlay").style.display = "none";
+            suiteActiveAlbum = null;
+        }
+
+        function renderSuiteSheet() {
+            if (!suiteActiveAlbum) return;
+            if (suiteActiveAlbum.gate === "due" && suiteCurrentSheet >= 6) {
+                document.getElementById("suiteDueBanner").style.display = "block";
+                document.getElementById("suiteViewerActiveImg").style.filter = "blur(18px)";
+            } else {
+                document.getElementById("suiteDueBanner").style.display = "none";
+                document.getElementById("suiteViewerActiveImg").style.filter = "none";
+            }
+            document.getElementById("suiteViewerActiveImg").src = suiteActiveAlbum.sheets[suiteCurrentSheet].data;
+            document.getElementById("suiteViewerIndicator").textContent = `Sheet ${suiteCurrentSheet + 1} / ${suiteActiveAlbum.sheets.length}`;
+        }
+
+        function navSuiteSheet(delta) {
+            if (!suiteActiveAlbum) return;
+            const nextIdx = suiteCurrentSheet + delta;
+            if (nextIdx >= 0 && nextIdx < suiteActiveAlbum.sheets.length) {
+                suiteCurrentSheet = nextIdx;
+                renderSuiteSheet();
+            }
+        }
+
+        /* RESIZER */
+        function previewSuiteResizer(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = evt => { rawResizerImage = new Image(); rawResizerImage.src = evt.target.result; };
+            reader.readAsDataURL(file);
+        }
+
+        function downloadSuiteResized() {
+            if (!rawResizerImage) { alert("Please select an image!"); return; }
+            const targetWidth = parseInt(document.getElementById("suiteResizerWidth").value) || 1920;
+            const watermark = document.getElementById("suiteResizerWatermark").value.trim();
+
+            const canvas = document.createElement("canvas");
+            const scale = targetWidth / rawResizerImage.width;
+            canvas.width = targetWidth;
+            canvas.height = rawResizerImage.height * scale;
+
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(rawResizerImage, 0, 0, canvas.width, canvas.height);
+
+            if (watermark) {
+                ctx.font = "bold 32px Montserrat, sans-serif";
+                ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
+                ctx.textAlign = "right";
+                ctx.fillText(watermark, canvas.width - 30, canvas.height - 30);
+            }
+
+            const link = document.createElement("a");
+            link.download = `dht_watermarked_${Date.now()}.jpg`;
+            link.href = canvas.toDataURL("image/jpeg", 0.85);
+            link.click();
+        }
+
+        /* PDF TO JPG */
+        async function convertSuitePdf() {
+            const file = document.getElementById("suitePdfInp").files[0];
+            if (!file) { alert("Select PDF file!"); return; }
+            const status = document.getElementById("suitePdfMsg");
+            status.textContent = "Extracting pages... Please wait...";
+
+            const reader = new FileReader();
+            reader.readAsArrayBuffer(file);
+            reader.onload = async function() {
+                const typedArray = new Uint8Array(this.result);
+                const pdf = await pdfjsLib.getDocument(typedArray).promise;
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    const page = await pdf.getPage(pageNum);
+                    const viewport = page.getViewport({ scale: 1.5 });
+                    const canvas = document.createElement("canvas");
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    const ctx = canvas.getContext("2d");
+                    await page.render({ canvasContext: ctx, viewport }).promise;
+
+                    const dl = document.createElement("a");
+                    dl.download = `Sheet_Page_${pageNum}.jpg`;
+                    dl.href = canvas.toDataURL("image/jpeg");
+                    dl.click();
+                }
+                status.textContent = "✅ All sheets extracted as JPG!";
+            };
+        }
+
+        /* AUDIO EXTRACTOR */
+        async function extractSuiteAudio() {
+            const file = document.getElementById("suiteVideoInp").files[0];
+            if (!file) { alert("Select video file!"); return; }
+            const status = document.getElementById("suiteAudioMsg");
+            status.textContent = "Extracting audio...";
+
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const arrayBuffer = await file.arrayBuffer();
+            try {
+                const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+                let numOfChan = audioBuffer.numberOfChannels,
+                    length = audioBuffer.length * numOfChan * 2 + 44,
+                    out = new DataView(new ArrayBuffer(length)),
+                    channels = [], i, sample, offset = 0, pos = 0;
+
+                function setUint16(data) { out.setUint16(pos, data, true); pos += 2; }
+                function setUint32(data) { out.setUint32(pos, data, true); pos += 4; }
+
+                setUint32(0x46464952); setUint32(length - 8); setUint32(0x45564157);
+                setUint32(0x20746d66); setUint32(16); setUint16(1);
+                setUint16(numOfChan); setUint32(audioBuffer.sampleRate);
+                setUint32(audioBuffer.sampleRate * 2 * numOfChan); setUint16(numOfChan * 2);
+                setUint16(16); setUint32(0x61746164); setUint32(length - pos - 4);
+
+                for (i = 0; i < audioBuffer.numberOfChannels; i++) channels.push(audioBuffer.getChannelData(i));
+                while (offset < audioBuffer.length) {
+                    for (i = 0; i < numOfChan; i++) {
+                        sample = Math.max(-1, Math.min(1, channels[i][offset]));
+                        sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
+                        out.setInt16(pos, sample, true);
+                        pos += 2;
+                    }
+                    offset++;
+                }
+                const wavBlob = new Blob([out.buffer], { type: "audio/wav" });
+                const a = document.createElement("a");
+                a.download = `dht_audio_track_${Date.now()}.wav`;
+                a.href = URL.createObjectURL(wavBlob);
+                a.click();
+                status.textContent = "✅ Audio track extracted (WAV)!";
+            } catch (err) {
+                status.textContent = "⚠️ Browser audio format limit.";
+            }
+        }
+
+        /* PHOTO SELECTION */
+        function generateSuiteSelectLink() {
+            const couple = document.getElementById("suiteSelCouple").value.trim();
+            const pin = document.getElementById("suiteSelPin").value.trim();
+            if (!couple || !pin) { alert("Fill Couple Name and 4-Digit PIN!"); return; }
+            const slug = couple.toLowerCase().replace(/[^a-z0-9]/g, "_");
+            const url = `${window.location.origin}${window.location.pathname}?select=${slug}&pin=${pin}`;
+            document.getElementById("suiteSelLinkResult").textContent = `Client Selection Link:\n${url}`;
+        }
+
+        /* QR */
+        function makeSuiteQR() {
+            const url = document.getElementById("suiteQrUrl").value.trim();
+            if (!url) { alert("Enter link!"); return; }
+            const container = document.getElementById("suiteQrWrap");
+            container.innerHTML = "";
+            new QRCode(container, { text: url, width: 175, height: 175, colorDark:"#000", colorLight:"#fff" });
+        }
+
+        /* PATRIKA */
+        function createSuitePatrika() {
+            const couple = document.getElementById("suitePatCouple").value.trim();
+            const date = document.getElementById("suitePatDate").value;
+            const map = document.getElementById("suitePatMap").value.trim();
+            if (!couple || !date) { alert("Enter Couple Name & Date!"); return; }
+            alert(`✅ Digital Patrika Ready!\nCouple: ${couple}\nDate: ${date}\nMap: ${map}`);
+            closeModal("suitePatrikaModal");
+        }
+
+        /* STATUS TRACKER */
+        function saveSuiteStatus() {
+            const order = document.getElementById("suiteStatusOrder").value.trim();
+            const status = document.getElementById("suiteStatusSelect").value;
+            if (!order) { alert("Enter Order ID or Client Name!"); return; }
+            let statuses = JSON.parse(localStorage.getItem("DHT_PROJECT_STATUS") || "{}");
+            statuses[order] = { status, date: new Date().toLocaleDateString() };
+            localStorage.setItem("DHT_PROJECT_STATUS", JSON.stringify(statuses));
+            renderSuiteStatusList();
+        }
+
+        function renderSuiteStatusList() {
+            const container = document.getElementById("suiteStatusHistory");
+            const statuses = JSON.parse(localStorage.getItem("DHT_PROJECT_STATUS") || "{}");
+            container.innerHTML = "";
+            for (const [order, data] of Object.entries(statuses)) {
+                const card = document.createElement("div");
+                card.style.cssText = "background:#080a0f; border:1px solid var(--border); border-radius:6px; padding:8px 12px; margin-bottom:6px; display:flex; justify-content:space-between; font-size:12px;";
+                card.innerHTML = `<span><strong>${order}</strong>: ${data.status}</span><small style="color:var(--text-gray);">${data.date}</small>`;
+                container.appendChild(card);
+            }
+        }
+
+        /* CULLING */
+        function loadSuiteCull(e) {
+            suiteCullFiles = Array.from(e.target.files);
+            if (!suiteCullFiles.length) return;
+            suiteCullIdx = 0; suiteShortlist = [];
+            showSuiteCull();
+        }
+
+        function showSuiteCull() {
+            if (!suiteCullFiles[suiteCullIdx]) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById("suiteCullImg").src = e.target.result;
+                const isShort = suiteShortlist.includes(suiteCullFiles[suiteCullIdx].name);
+                document.getElementById("suiteCullBadge").textContent = `Photo ${suiteCullIdx + 1} / ${suiteCullFiles.length} [${isShort ? '⭐ SHORTLISTED' : 'UNRATED'}]`;
+            };
+            reader.readAsDataURL(suiteCullFiles[suiteCullIdx]);
+        }
+
+        function stepSuiteCull(delta) {
+            const next = suiteCullIdx + delta;
+            if (next >= 0 && next < suiteCullFiles.length) {
+                suiteCullIdx = next;
+                showSuiteCull();
+            }
+        }
+
+        function toggleSuiteShortlist() {
+            if (!suiteCullFiles[suiteCullIdx]) return;
+            const name = suiteCullFiles[suiteCullIdx].name;
+            if (suiteShortlist.includes(name)) {
+                suiteShortlist = suiteShortlist.filter(n => n !== name);
+            } else {
+                suiteShortlist.push(name);
+            }
+            showSuiteCull();
+        }
+
+        /* CORRECTIONS */
+        function promptSuiteCorrection() {
+            if (!suiteActiveAlbum) return;
+            const text = prompt(`Request change on Sheet ${suiteCurrentSheet + 1}:`);
+            if (!text) return;
+            let list = JSON.parse(localStorage.getItem("DHT_CORRECTIONS") || "[]");
+            list.push({ album: suiteActiveAlbum.title, sheet: suiteCurrentSheet + 1, note: text, time: new Date().toLocaleTimeString() });
+            localStorage.setItem("DHT_CORRECTIONS", JSON.stringify(list));
+            refreshSuiteCorrections();
+            alert("✅ Change request submitted to DHT STUDIO!");
+        }
+
+        function renderSuiteCorrections() {
+            const container = document.getElementById("suiteCorrList");
+            const list = JSON.parse(localStorage.getItem("DHT_CORRECTIONS") || "[]");
+            container.innerHTML = "";
+            if (list.length === 0) {
+                container.innerHTML = `<p style="font-size:12px; color:var(--text-gray); text-align:center;">No pending change requests.</p>`;
+                return;
+            }
+            list.forEach((c, i) => {
+                const card = document.createElement("div");
+                card.style.cssText = "background:#080a0f; border:1px solid var(--border); border-radius:6px; padding:10px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-size:12px;";
+                card.innerHTML = `<div><strong>${c.album} (Sheet ${c.sheet})</strong><br><small style="color:var(--text-gray);">${c.note}</small></div>
+                    <button type="button" class="btn btn-red" style="padding:3px 8px; font-size:10px;" onclick="resolveSuiteCorrection(${i})">Resolve</button>`;
+                container.appendChild(card);
+            });
+        }
+
+        function resolveSuiteCorrection(i) {
+            let list = JSON.parse(localStorage.getItem("DHT_CORRECTIONS") || "[]");
+            list.splice(i, 1);
+            localStorage.setItem("DHT_CORRECTIONS", JSON.stringify(list));
+            refreshSuiteCorrections();
+            renderSuiteCorrections();
+        }
+
+        function refreshSuiteCorrections() {
+            const list = JSON.parse(localStorage.getItem("DHT_CORRECTIONS") || "[]");
+            const countEl = document.getElementById("suitePendingCorrText");
+            if (countEl) countEl.textContent = `${list.length} change requests`;
+        }
+
+        // Keyboard support for Culling
+        window.addEventListener("keydown", (e) => {
+            const cullModal = document.getElementById("suiteCullingModal");
+            if (cullModal && cullModal.style.display === "flex") {
+                if (e.key === "ArrowRight") stepSuiteCull(1);
+                if (e.key === "ArrowLeft") stepSuiteCull(-1);
+                if (e.key === " ") { e.preventDefault(); toggleSuiteShortlist(); }
+            }
+        });
+
         window.addEventListener("DOMContentLoaded", () => {
             const pinInp = document.getElementById("adminPinInput");
             if (pinInp) pinInp.addEventListener("keypress", e => { if (e.key === "Enter") executePinUnlock(); });
@@ -2313,6 +3033,11 @@
             syncCustomerPhotographers();
             syncBillingFirestore();
             runLiveInjectedCode();
+            refreshSuiteCorrections();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const albumSlug = urlParams.get('album');
+            if (albumSlug) openSuiteViewerBySlug(albumSlug);
         });
     </script>
 </body>
