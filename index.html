@@ -169,6 +169,7 @@
                         🧾 STUDIO BILLING
                     </button>
                     <button type="button" class="btn btn-dark editor-only" onclick="openSubscribersModal()">👥 Subscribers (<span id="subCountNav">0</span>)</button>
+                    <button type="button" class="btn btn-dark editor-only" onclick="openChangePinModal()">🔑 Change PIN</button>
                     <button type="button" class="btn btn-dark" onclick="togglePresentationMode()" id="presentationBtn">🔒 Admin Login</button>
                     <a href="tel:+918372929859" class="btn btn-gold">📞 Call</a>
                 </div>
@@ -281,6 +282,20 @@
         </div>
     </div>
 
+    <!-- MODAL: CLIENT SPECIFIC SECRET PIN PROMPT -->
+    <div class="modal" id="clientPinModal">
+        <div class="modal-box" style="max-width: 380px; text-align: center;">
+            <span style="font-size:38px; color:var(--gold);">🔐</span>
+            <h3 class="modal-title" id="clientPinModalTitle" style="margin: 8px 0 4px;">Customer Secret PIN</h3>
+            <p style="font-size:12px; color:var(--text-gray); margin-bottom:15px;">Is studio ke files dekhne ke liye Secret PIN enter karein</p>
+            <input type="password" id="clientSecretPinInput" class="form-control" style="text-align:center; font-size:22px; letter-spacing:6px; width:170px; margin:0 auto;" maxlength="8" autofocus onkeypress="if(event.key==='Enter') executeClientPinCheck()">
+            <div class="modal-btns" style="justify-content:center;">
+                <button type="button" class="btn btn-dark" onclick="closeModal('clientPinModal')">Cancel</button>
+                <button type="button" class="btn btn-gold" onclick="executeClientPinCheck()">Unlock Workspace 🔓</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL: ADD / EDIT WORK (INSIDE CLIENT PROFILE) -->
     <div class="modal" id="workModal">
         <div class="modal-box">
@@ -318,14 +333,20 @@
         </div>
     </div>
 
-    <!-- MODAL: ADD CUSTOMER -->
+    <!-- MODAL: ADD / EDIT / RENAME CUSTOMER (WITH SECRET PIN) -->
     <div class="modal" id="photographerModal">
         <div class="modal-box">
-            <h3 class="modal-title">+ Add Customer Studio</h3>
+            <h3 class="modal-title" id="photographerModalTitle">+ Add Customer Studio</h3>
+            <input type="hidden" id="editPhotographerId">
             <div class="form-group"><label>Studio / Brand Name *</label><input type="text" id="custStudioName" class="form-control" placeholder="e.g. B.K Studio"></div>
             <div class="form-group"><label>Owner / Photographer Name</label><input type="text" id="custOwnerName" class="form-control" placeholder="e.g. Bikram"></div>
             <div class="form-group"><label>Mobile Number *</label><input type="text" id="custPhone" class="form-control" placeholder="e.g. 9876543210"></div>
             <div class="form-group"><label>Location / Area</label><input type="text" id="custLocation" class="form-control" placeholder="e.g. Purulia, W.B"></div>
+            <div class="form-group">
+                <label style="color:var(--gold);">🔑 Set Client Secret PIN (Customer ke liye)</label>
+                <input type="text" id="custSecretPin" class="form-control" placeholder="e.g. 1234 (Sirf yeh customer kholega)">
+                <small style="font-size:11px; color:var(--text-gray);">Yeh PIN daal kar sirf yeh client apne albums dekh sakega.</small>
+            </div>
             <div class="modal-btns">
                 <button type="button" class="btn btn-dark" onclick="closeModal('photographerModal')">Cancel</button>
                 <button type="button" class="btn btn-gold" onclick="savePhotographerData()">Save Live</button>
@@ -369,7 +390,7 @@
         </div>
     </div>
 
-    <!-- MODAL: ADD / EDIT BILLING JOB (WITH FULL SERVICES) -->
+    <!-- MODAL: ADD / EDIT BILLING JOB -->
     <div class="modal" id="jobEditModal">
         <div class="modal-box" style="max-width: 620px;">
             <h3 class="modal-title" id="jobModalTitle">Job Entry Form</h3>
@@ -487,6 +508,30 @@
         </div>
     </div>
 
+    <!-- MODAL: CHANGE MASTER PIN -->
+    <div class="modal" id="changePinModal">
+        <div class="modal-box" style="max-width: 400px; text-align: center;">
+            <span style="font-size:36px; color:var(--gold);">🔑</span>
+            <h3 class="modal-title" style="margin: 8px 0 14px;">Change Security PIN</h3>
+            <div class="form-group" style="text-align: left;">
+                <label>Current Master PIN</label>
+                <input type="password" id="oldPinInput" class="form-control" maxlength="6" placeholder="Enter current PIN">
+            </div>
+            <div class="form-group" style="text-align: left;">
+                <label>New Master PIN</label>
+                <input type="password" id="newPinInput" class="form-control" maxlength="6" placeholder="Enter 4-6 digit new PIN">
+            </div>
+            <div class="form-group" style="text-align: left;">
+                <label>Confirm New PIN</label>
+                <input type="password" id="confirmPinInput" class="form-control" maxlength="6" placeholder="Re-enter new PIN">
+            </div>
+            <div class="modal-btns" style="justify-content:center;">
+                <button type="button" class="btn btn-dark" onclick="closeModal('changePinModal')">Cancel</button>
+                <button type="button" class="btn btn-gold" onclick="saveNewMasterPin()">Update PIN</button>
+            </div>
+        </div>
+    </div>
+
     <!-- OTHER MODALS -->
     <div class="modal" id="pinGateModal">
         <div class="modal-box" style="max-width: 380px; text-align: center;">
@@ -596,9 +641,19 @@
             db = firebase.firestore();
         } catch (e) { console.error("Firebase init:", e); }
 
-        const MASTER_ADMIN_PIN = "8372";
+        let currentMasterPin = "8372";
         let pinPurpose = "admin";
+        let targetCustIdForPin = null;
         let uploadedImportHtmlText = "";
+
+        function syncMasterPin() {
+            if (!db) return;
+            db.collection("settings").doc("security").onSnapshot(doc => {
+                if (doc.exists && doc.data().pin) {
+                    currentMasterPin = doc.data().pin;
+                }
+            });
+        }
 
         function togglePresentationMode() {
             if (!document.body.classList.contains("presentation-mode")) {
@@ -624,7 +679,7 @@
 
         function executePinUnlock() {
             const entered = document.getElementById("adminPinInput").value.trim();
-            if (entered === MASTER_ADMIN_PIN) {
+            if (entered === currentMasterPin) {
                 closeModal("pinGateModal");
                 if (pinPurpose === "billing") {
                     openModal("billingModal");
@@ -632,14 +687,48 @@
                 } else {
                     document.body.classList.remove("presentation-mode");
                     document.getElementById("presentationBtn").textContent = "🔓 Lock Admin";
-                    alert("Master Edit Mode Active! Ab saare edit aur internal client options khul gaye hain.");
+                    alert("Master Edit Mode Active! Ab saare edit aur client rename options khul gaye hain.");
                 }
             } else {
                 alert("Galat PIN! Access Denied.");
             }
         }
 
-        /* 1. CUSTOMER WORKSPACE ENGINE (CLIENT & WORK VAULT) */
+        function openChangePinModal() {
+            document.getElementById("oldPinInput").value = "";
+            document.getElementById("newPinInput").value = "";
+            document.getElementById("confirmPinInput").value = "";
+            openModal("changePinModal");
+        }
+
+        function saveNewMasterPin() {
+            const oldP = document.getElementById("oldPinInput").value.trim();
+            const newP = document.getElementById("newPinInput").value.trim();
+            const confP = document.getElementById("confirmPinInput").value.trim();
+
+            if (oldP !== currentMasterPin) {
+                alert("Current PIN galat hai!");
+                return;
+            }
+            if (newP.length < 4) {
+                alert("Naya PIN kam se kam 4 digit ka hona chahiye!");
+                return;
+            }
+            if (newP !== confP) {
+                alert("New PIN aur Confirm PIN match nahi ho rahe!");
+                return;
+            }
+
+            if (db) {
+                db.collection("settings").doc("security").set({ pin: newP }, { merge: true }).then(() => {
+                    currentMasterPin = newP;
+                    closeModal("changePinModal");
+                    alert("Master PIN successfully update ho gaya!");
+                }).catch(err => alert("Error saving PIN: " + err.message));
+            }
+        }
+
+        /* 1. CUSTOMER WORKSPACE ENGINE (CLIENT & WORK VAULT WITH CLIENT SECRET PIN) */
         let globalCustomersList = [];
         let activeCustId = null;
         let uploadedCustHtmlText = "";
@@ -649,7 +738,44 @@
             backToCustomerDirectory();
         }
 
-        function openCustomerDetail(id) {
+        function promptCustomerPin(id) {
+            const cust = globalCustomersList.find(c => c.id === id);
+            if (!cust) return;
+
+            // Agar Master Admin pehle se unlocked hai, toh bina PIN ke direct khulega
+            if (!document.body.classList.contains("presentation-mode")) {
+                loadCustomerWorkspaceDirect(id);
+                return;
+            }
+
+            // Agar is customer ka koi PIN set nahi hai, toh direct khul jayega
+            if (!cust.pin) {
+                loadCustomerWorkspaceDirect(id);
+                return;
+            }
+
+            // Agar PIN set hai, toh PIN popup khulega
+            targetCustIdForPin = id;
+            document.getElementById("clientPinModalTitle").textContent = `${cust.studio} Security`;
+            document.getElementById("clientSecretPinInput").value = "";
+            openModal("clientPinModal");
+            setTimeout(() => { const inp = document.getElementById("clientSecretPinInput"); if (inp) inp.focus(); }, 120);
+        }
+
+        function executeClientPinCheck() {
+            const entered = document.getElementById("clientSecretPinInput").value.trim();
+            const cust = globalCustomersList.find(c => c.id === targetCustIdForPin);
+            if (!cust) return;
+
+            if (entered === cust.pin || entered === currentMasterPin) {
+                closeModal("clientPinModal");
+                loadCustomerWorkspaceDirect(targetCustIdForPin);
+            } else {
+                alert("Galat Secret PIN! Sirf wahi studio is file ko access kar sakta hai.");
+            }
+        }
+
+        function loadCustomerWorkspaceDirect(id) {
             activeCustId = id;
             const cust = globalCustomersList.find(c => c.id === id);
             if (!cust) return;
@@ -795,30 +921,60 @@
         }
 
         function openAddPhotographerModal() {
+            document.getElementById("photographerModalTitle").textContent = "+ Add Customer Studio";
+            document.getElementById("editPhotographerId").value = "";
             document.getElementById("custStudioName").value = "";
             document.getElementById("custOwnerName").value = "";
             document.getElementById("custPhone").value = "";
             document.getElementById("custLocation").value = "";
+            document.getElementById("custSecretPin").value = "";
+            openModal("photographerModal");
+        }
+
+        function editCustomerDetails(id) {
+            const cust = globalCustomersList.find(c => c.id === id);
+            if (!cust) return;
+
+            document.getElementById("photographerModalTitle").textContent = "✏️ Edit / Rename Customer Studio";
+            document.getElementById("editPhotographerId").value = cust.id;
+            document.getElementById("custStudioName").value = cust.studio || "";
+            document.getElementById("custOwnerName").value = cust.owner || "";
+            document.getElementById("custPhone").value = cust.phone || "";
+            document.getElementById("custLocation").value = cust.location || "";
+            document.getElementById("custSecretPin").value = cust.pin || "";
             openModal("photographerModal");
         }
 
         function savePhotographerData() {
             const sName = document.getElementById("custStudioName").value.trim();
             const phone = document.getElementById("custPhone").value.trim();
+            const editId = document.getElementById("editPhotographerId").value;
+            const secretPin = document.getElementById("custSecretPin").value.trim();
+
             if (!sName || !phone) { alert("Studio name aur mobile zaroori hai!"); return; }
 
+            const payload = {
+                studio: sName,
+                owner: document.getElementById("custOwnerName").value.trim(),
+                phone: phone,
+                location: document.getElementById("custLocation").value.trim() || 'Purulia, W.B',
+                pin: secretPin
+            };
+
             if (db) {
-                db.collection("photographers").add({
-                    studio: sName,
-                    owner: document.getElementById("custOwnerName").value.trim(),
-                    phone: phone,
-                    location: document.getElementById("custLocation").value.trim() || 'Purulia, W.B',
-                    works: [],
-                    timestamp: Date.now()
-                }).then(() => {
-                    closeModal("photographerModal");
-                    alert("Customer add ho gaya!");
-                });
+                if (editId) {
+                    db.collection("photographers").doc(editId).update(payload).then(() => {
+                        closeModal("photographerModal");
+                        alert("Customer details aur PIN successfully update ho gaye!");
+                    });
+                } else {
+                    payload.works = [];
+                    payload.timestamp = Date.now();
+                    db.collection("photographers").add(payload).then(() => {
+                        closeModal("photographerModal");
+                        alert("Customer add ho gaya!");
+                    });
+                }
             }
         }
 
@@ -850,16 +1006,23 @@
                 card.className = "photographer-card";
                 card.innerHTML = `
                     <div>
-                        <h4 class="studio-client-name" onclick="openCustomerDetail('${c.id}')">${c.studio}</h4>
+                        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                            <h4 class="studio-client-name" onclick="promptCustomerPin('${c.id}')">${c.studio}</h4>
+                            <span style="font-size:11px; color:${c.pin ? 'var(--gold)' : 'var(--text-gray)'};">
+                                ${c.pin ? '🔒 Protected' : '🔓 Open'}
+                            </span>
+                        </div>
                         <p style="font-size:12px; color:var(--text-gray);">Owner: ${c.owner || 'N/A'}</p>
                         <div class="client-meta">
                             <span>📞 +91 ${c.phone}</span>
                             <span>📍 ${c.location || 'Local Area'}</span>
                             <span style="color:var(--gold);">📁 ${c.works ? c.works.length : 0} Projects</span>
+                            <span class="editor-only" style="color:#38bdf8; font-weight:700;">🔑 PIN: ${c.pin || 'None'}</span>
                         </div>
                     </div>
-                    <div style="display:flex; gap:6px; margin-top:10px;">
-                        <button type="button" class="btn btn-gold" style="flex:1; font-size:11.5px;" onclick="openCustomerDetail('${c.id}')">📂 Open Workspace</button>
+                    <div style="display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;">
+                        <button type="button" class="btn btn-gold" style="flex:1; font-size:11px;" onclick="promptCustomerPin('${c.id}')">📂 Open</button>
+                        <button type="button" class="btn btn-dark editor-only" style="font-size:11px;" onclick="editCustomerDetails('${c.id}')">✏️ Rename / PIN</button>
                         <a href="https://wa.me/91${c.phone.replace(/\D/g,'')}" target="_blank" class="btn btn-green" style="font-size:11px;">💬 WA</a>
                         <button type="button" class="btn btn-red editor-only" style="font-size:11px;" onclick="db.collection('photographers').doc('${c.id}').delete()">🗑️</button>
                     </div>
@@ -1464,6 +1627,7 @@
         window.addEventListener("DOMContentLoaded", () => {
             const pinInp = document.getElementById("adminPinInput");
             if (pinInp) pinInp.addEventListener("keypress", e => { if (e.key === "Enter") executePinUnlock(); });
+            syncMasterPin();
             syncDirectWorkStream();
             syncClientReviews();
             syncSubscribers();
