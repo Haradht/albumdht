@@ -26,497 +26,120 @@
             --border-gold: rgba(245, 158, 11, 0.4);
             --accent-green: #25D366;
             --accent-red: #ef4444;
-            --accent-amb: #f59e0b;
             --neon-blue: #00f0ff;
             --neon-pink: #ff007f;
             --neon-youtube: #ff0000;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-white);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding-bottom: 80px;
-            overflow-x: hidden;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-white); line-height: 1.6; min-height: 100vh; padding-bottom: 80px; overflow-x: hidden; }
 
         .ambient-glow {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1000px;
-            height: 450px;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 1000px; height: 450px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%); pointer-events: none; z-index: 0;
         }
 
-        .container {
-            width: 100%;
-            max-width: 1380px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 1;
-        }
+        .container { width: 100%; max-width: 1380px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
 
         /* NAVBAR */
         header {
-            background: rgba(10, 13, 20, 0.94);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.7);
+            background: rgba(10, 13, 20, 0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 25px rgba(0,0,0,0.7);
         }
 
-        .nav-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+        .nav-wrapper { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; gap: 12px; flex-wrap: wrap; }
+        .brand-logo-wrap { display: flex; flex-direction: column; align-items: center; text-decoration: none; cursor: pointer; user-select: none; }
+        .crown-icon { font-size: 20px; line-height: 1; filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.8)); }
+        .brand-logo-text { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 900; letter-spacing: 3px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .brand-sub-text { font-size: 8px; font-weight: 800; letter-spacing: 5px; color: #cbd5e1; margin-left: 5px; }
 
-        .brand-logo-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .crown-icon {
-            font-size: 20px;
-            line-height: 1;
-            filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.8));
-            animation: crownPulse 3s infinite ease-in-out;
-        }
-
-        @keyframes crownPulse {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-2px) scale(1.08); filter: drop-shadow(0 4px 12px rgba(251, 191, 36, 1)); }
-        }
-
-        .brand-logo-text {
-            font-family: 'Cinzel', serif;
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1.1;
-        }
-
-        .brand-sub-text {
-            font-size: 8px;
-            font-weight: 800;
-            letter-spacing: 5px;
-            color: #cbd5e1;
-            margin-left: 5px;
-            line-height: 1;
-        }
-
-        /* NEON SOCIAL STRIP */
-        .neon-social-strip {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(14, 18, 26, 0.7);
-            padding: 6px 14px;
-            border-radius: 30px;
-            border: 1px solid #1a2233;
-        }
-
-        .neon-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            text-decoration: none;
-            font-size: 15px;
-            background: #090c12;
-            transition: all 0.3s ease;
-        }
-
+        .neon-social-strip { display: flex; align-items: center; gap: 10px; background: rgba(14, 18, 26, 0.7); padding: 6px 14px; border-radius: 30px; border: 1px solid #1a2233; }
+        .neon-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; text-decoration: none; font-size: 15px; background: #090c12; transition: all 0.3s ease; }
         .neon-btn.wa { border: 1px solid var(--accent-green); color: var(--accent-green); }
-        .neon-btn.wa:hover { box-shadow: 0 0 15px var(--accent-green); transform: scale(1.15) translateY(-2px); }
         .neon-btn.insta { border: 1px solid var(--neon-pink); color: var(--neon-pink); }
-        .neon-btn.insta:hover { box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.15) translateY(-2px); }
         .neon-btn.fb { border: 1px solid var(--neon-blue); color: var(--neon-blue); }
-        .neon-btn.fb:hover { box-shadow: 0 0 15px var(--neon-blue); transform: scale(1.15) translateY(-2px); }
         .neon-btn.yt { border: 1px solid var(--neon-youtube); color: var(--neon-youtube); }
-        .neon-btn.yt:hover { box-shadow: 0 0 15px var(--neon-youtube); transform: scale(1.15) translateY(-2px); }
 
-        /* BUTTONS */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 14px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .btn-gold {
-            background: var(--gold-gradient);
-            color: #000;
-            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25);
-        }
-
-        .btn-gold:hover {
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-            transform: translateY(-1px);
-        }
-
-        .btn-dark {
-            background: #131722;
-            color: #d1d5db;
-            border: 1px solid var(--border);
-        }
-
-        .btn-dark:hover {
-            background: #1a2030;
-            border-color: var(--gold);
-        }
-
-        .btn-red {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ff6b6b;
-            border: 1px solid rgba(239, 68, 68, 0.4);
-        }
-
-        .btn-red:hover {
-            background: var(--accent-red);
-            color: #fff;
-        }
-
-        .btn-green {
-            background: var(--accent-green);
-            color: #fff;
-        }
+        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; border: none; text-decoration: none; transition: all 0.2s ease; }
+        .btn-gold { background: var(--gold-gradient); color: #000; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25); }
+        .btn-dark { background: #131722; color: #d1d5db; border: 1px solid var(--border); }
+        .btn-dark:hover { background: #1a2030; border-color: var(--gold); }
+        .btn-red { background: rgba(239, 68, 68, 0.15); color: #ff6b6b; border: 1px solid rgba(239, 68, 68, 0.4); }
+        .btn-red:hover { background: var(--accent-red); color: #fff; }
+        .btn-green { background: var(--accent-green); color: #fff; }
 
         /* HERO */
-        .studio-hero {
-            text-align: center;
-            padding: 45px 0 25px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 35px;
-        }
+        .studio-hero { text-align: center; padding: 45px 0 25px 0; border-bottom: 1px solid var(--border); margin-bottom: 35px; }
+        .software-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(245, 158, 11, 0.4); color: var(--gold-light); padding: 6px 18px; border-radius: 30px; font-size: 11px; font-weight: 800; letter-spacing: 2px; margin-bottom: 18px; }
+        .hero-big-title { font-family: 'Cinzel', serif; font-size: clamp(38px, 6vw, 68px); font-weight: 900; letter-spacing: 4px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
+        .tag-en { font-family: 'Cinzel', serif; font-size: 14px; color: var(--gold-light); }
+        .tag-hi { font-family: 'Rozha One', serif; font-size: 13.5px; color: #f1f5f9; }
+        .tag-bn { font-family: 'Tiro Bangla', serif; font-size: 13.5px; color: #cbd5e1; }
 
-        .software-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01));
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            color: var(--gold-light);
-            padding: 6px 18px;
-            border-radius: 30px;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            margin-bottom: 18px;
-        }
+        /* SUBSCRIBE BANNER */
+        .subscribe-banner { background: #111520; border: 1px solid var(--border-gold); border-radius: 14px; padding: 22px 28px; margin: 25px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
 
-        .hero-big-title {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(38px, 6vw, 68px);
-            font-weight: 900;
-            letter-spacing: 4px;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
-            line-height: 1.1;
-        }
-
-        .hero-taglines-box {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            max-width: 750px;
-        }
-
-        .tag-en { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 600; letter-spacing: 1px; color: var(--gold-light); }
-        .tag-hi { font-family: 'Rozha One', 'Montserrat', serif; font-size: 13.5px; color: #f1f5f9; }
-        .tag-bn { font-family: 'Tiro Bangla', 'Montserrat', serif; font-size: 13.5px; color: #cbd5e1; }
-
-        /* SUBSCRIBE ALERT CARD */
-        .subscribe-banner {
-            background: linear-gradient(135deg, #111520 0%, #1a2233 100%);
-            border: 1px solid var(--border-gold);
-            border-radius: 14px;
-            padding: 24px 28px;
-            margin: 25px 0 35px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .subscribe-info h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 18px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .subscribe-form {
-            display: flex;
-            gap: 10px;
-            flex: 1;
-            max-width: 520px;
-            flex-wrap: wrap;
-        }
-
-        /* DHT STUDIO WORK SECTION */
-        .work-section-wrap { margin-top: 30px; }
-        .work-headline-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 5px solid var(--gold);
-            background: linear-gradient(90deg, rgba(245,158,11,0.08) 0%, rgba(0,0,0,0) 100%);
-            padding: 16px 20px;
-            border-radius: 0 10px 10px 0;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .work-big-headline {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(22px, 3.5vw, 32px);
-            font-weight: 900;
-            letter-spacing: 2px;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .direct-showcase-stream { display: flex; flex-direction: column; gap: 45px; }
-        .showcase-block {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.6);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .showcase-block.is-pinned {
-            border: 2px solid var(--gold);
-            box-shadow: 0 12px 40px rgba(245, 158, 11, 0.25);
-        }
-
-        .block-controller-bar {
-            background: #0a0d14;
-            border-bottom: 1px solid var(--border);
-            padding: 12px 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .block-title-box h3 { font-family: 'Cinzel', serif; font-size: 17px; color: #fff; font-weight: 700; display:flex; align-items:center; gap:8px;}
-        .block-title-box p { font-size: 11.5px; color: var(--text-gray); }
+        /* SHOWCASE */
+        .work-headline-bar { display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--gold); background: linear-gradient(90deg, rgba(245,158,11,0.08) 0%, transparent 100%); padding: 16px 20px; border-radius: 0 10px 10px 0; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+        .work-big-headline { font-family: 'Cinzel', serif; font-size: clamp(22px, 3.5vw, 32px); font-weight: 900; letter-spacing: 2px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .direct-showcase-stream { display: flex; flex-direction: column; gap: 40px; }
+        .showcase-block { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 10px 35px rgba(0,0,0,0.6); }
+        .showcase-block.is-pinned { border: 2px solid var(--gold); box-shadow: 0 12px 40px rgba(245, 158, 11, 0.25); }
+        .block-controller-bar { background: #0a0d14; border-bottom: 1px solid var(--border); padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .showcase-canvas-wrap { width: 100%; height: 680px; background: #000; }
         .showcase-iframe { width: 100%; height: 100%; border: none; display: block; background: #06080c; }
 
-        /* RATINGS & REVIEWS SECTION */
-        .reviews-section {
-            margin: 50px 0 30px;
-            background: #0a0d14;
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 30px 24px;
-        }
+        /* REVIEWS */
+        .reviews-section { margin: 50px 0 30px; background: #0a0d14; border: 1px solid var(--border); border-radius: 14px; padding: 30px 24px; }
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-top: 20px; }
+        .review-card { background: #111520; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
 
-        .reviews-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 24px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 16px;
-        }
-
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 18px;
-        }
-
-        .review-card {
-            background: #111520;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px 18px;
-            position: relative;
-        }
-
-        .review-card:hover { border-color: var(--border-gold); }
-        .star-gold { color: #f59e0b; font-size: 15px; letter-spacing: 2px; }
-
-        /* FLOATING WHATSAPP BUTTON */
-        .floating-wa-btn {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: var(--accent-green);
-            color: #fff;
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.45);
-            z-index: 9999;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .floating-wa-btn:hover {
-            transform: scale(1.12) translateY(-3px);
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.7);
-        }
+        /* FLOATING WHATSAPP */
+        .floating-wa-btn { position: fixed; bottom: 25px; right: 25px; background: var(--accent-green); color: #fff; width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 6px 25px rgba(37, 211, 102, 0.45); z-index: 9999; text-decoration: none; }
 
         body.presentation-mode .editor-only { display: none !important; }
 
-        /* MODALS */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.88);
-            backdrop-filter: blur(6px);
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-box {
-            background: #0f131d;
-            border: 1px solid var(--border);
-            border-top: 3px solid var(--gold);
-            border-radius: 12px;
-            max-width: 580px;
-            width: 100%;
-            padding: 24px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-        }
-
-        .workspace-modal-box {
-            max-width: 96vw;
-            width: 1300px;
-            height: 93vh;
-            display: flex;
-            flex-direction: column;
-            padding: 0;
-            background: #090c12;
-            border: 1px solid var(--border);
-            border-top: 3px solid var(--gold);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .workspace-topbar {
-            background: #0d111a;
-            padding: 14px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
+        /* WORKSPACE MODALS */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(6px); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-box { background: #0f131d; border: 1px solid var(--border); border-top: 3px solid var(--gold); border-radius: 12px; max-width: 580px; width: 100%; padding: 24px; max-height: 90vh; overflow-y: auto; }
+        .workspace-modal-box { max-width: 96vw; width: 1300px; height: 93vh; display: flex; flex-direction: column; background: #090c12; border: 1px solid var(--border); border-top: 3px solid var(--gold); border-radius: 12px; overflow: hidden; }
+        .workspace-topbar { background: #0d111a; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
         .workspace-body { flex: 1; overflow-y: auto; padding: 24px; }
-        .modal-title { font-family: 'Cinzel', serif; font-size: 19px; color: var(--gold); margin-bottom: 16px; }
+
         .form-group { margin-bottom: 13px; }
         .form-group label { display: block; font-size: 11.5px; color: var(--text-gray); margin-bottom: 5px; text-transform: uppercase; font-weight: 600; }
         .form-control { width: 100%; background: #080a0f; border: 1px solid var(--border); padding: 9px 12px; border-radius: 6px; color: #fff; font-size: 13px; outline: none; }
-        .form-control:focus { border-color: var(--gold); }
         .modal-btns { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
 
-        .photographers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; margin-top: 20px; }
+        /* CUSTOMER CARDS & WORK GRID */
+        .photographers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin-top: 20px; }
         .photographer-card { background: #11151f; border: 1px solid var(--border); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; }
         .photographer-card:hover { border-color: var(--gold); }
-        .studio-client-name { font-family: 'Cinzel', serif; font-size: 17px; color: #fff; margin-bottom: 2px; font-weight: 700; cursor: pointer; }
-        .client-meta { font-size: 11.5px; color: var(--text-gray); display: flex; flex-direction: column; gap: 3px; border-top: 1px solid var(--border); padding-top: 8px; margin: 10px 0; }
+        .works-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .work-item-card { background: #11151f; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+        .work-preview { width: 100%; height: 140px; background: #191e2b; display: flex; align-items: center; justify-content: center; }
+        .work-info { padding: 14px; }
 
         /* BILLING TILES */
         .billing-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 22px; }
-        .b-card { background: #0e131d; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; position: relative; overflow: hidden; }
+        .b-card { background: #0e131d; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; position: relative; }
         .b-card::before { content:''; position: absolute; top:0; left:0; width:4px; height:100%; background: var(--gold); }
-        .b-card small { display: block; font-size: 11.5px; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-        .b-card b { font-size: 22px; font-family: 'Cinzel', serif; margin-top: 4px; display: block; }
         .b-card.due::before { background: var(--accent-red); }
         .b-card.rec::before { background: var(--accent-green); }
-
-        .job-card {
-            background: #111520;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px 18px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-        .job-card:hover { border-color: var(--border-gold); transform: translateY(-2px); }
+        .job-card { background: #111520; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 12px; cursor: pointer; }
+        .job-card:hover { border-color: var(--border-gold); }
+        .job-card.late { border-left: 4px solid var(--accent-red); }
+        .job-bar { height: 6px; background: #1c2230; border-radius: 4px; margin: 10px 0; overflow: hidden; }
+        .job-bar-fill { height: 100%; background: var(--gold-gradient); }
 
         footer { background: #040608; border-top: 1px solid var(--border); padding: 40px 20px 25px; margin-top: 70px; text-align: center; }
-        .footer-address { font-size: 12.5px; color: var(--text-gray); line-height: 1.6; margin-top: 6px; }
     </style>
 </head>
 <body class="presentation-mode">
 
     <div class="ambient-glow"></div>
 
-    <!-- QUICK WHATSAPP CHAT BUTTON -->
-    <a href="https://wa.me/918372929859?text=Hello%20DHT%20STUDIO,%20I%20want%20to%20inquire%20about%20video%20editing%20/%20album%20design" target="_blank" class="floating-wa-btn" title="Direct WhatsApp Support">
-        💬
-    </a>
+    <a href="https://wa.me/918372929859?text=Hello%20DHT%20STUDIO,%20I%20want%20to%20inquire%20about%20video%20editing%20/%20album%20design" target="_blank" class="floating-wa-btn" title="Direct WhatsApp Support">💬</a>
 
     <div class="container">
         
@@ -530,7 +153,6 @@
                     <span class="brand-sub-text">STUDIO</span>
                 </div>
 
-                <!-- NEON SOCIAL LINKS WITH DIRECT EDIT OPTION -->
                 <div class="neon-social-strip">
                     <a href="https://wa.me/918372929859" target="_blank" class="neon-btn wa" id="socialWa" title="WhatsApp">💬</a>
                     <a href="https://instagram.com" target="_blank" class="neon-btn insta" id="socialInsta" title="Instagram">📸</a>
@@ -554,7 +176,7 @@
             </div>
         </header>
 
-        <!-- HERO SECTION -->
+        <!-- HERO -->
         <section class="studio-hero">
             <div class="software-badge">⚡ DAVINCI RESOLVE • ADOBE PHOTOSHOP • EDIUS</div>
             <h1 class="hero-big-title">DHT STUDIO</h1>
@@ -568,20 +190,20 @@
             </div>
         </section>
 
-        <!-- SUBSCRIBE & FOLLOW BANNER -->
+        <!-- SUBSCRIBE BANNER -->
         <section class="subscribe-banner">
-            <div class="subscribe-info">
-                <h3>🔔 Follow DHT STUDIO</h3>
-                <p style="font-size:12px; color:var(--text-gray); margin-top:2px;">Get instant WhatsApp / Email alerts whenever new 3D albums or teasers drop.</p>
+            <div>
+                <h3 style="font-family:'Cinzel', serif; font-size:18px;">🔔 Follow DHT STUDIO</h3>
+                <p style="font-size:12px; color:var(--text-gray);">Get instant WhatsApp / Email updates on new 3D albums & wedding projects.</p>
             </div>
-            <form class="subscribe-form" onsubmit="handleNewSubscriber(event)">
-                <input type="text" id="subNameInput" class="form-control" placeholder="Your Name / Studio" style="flex:1; min-width:140px;" required>
-                <input type="text" id="subContactInput" class="form-control" placeholder="WhatsApp No. or Email" style="flex:1.2; min-width:170px;" required>
-                <button type="submit" class="btn btn-gold" style="white-space:nowrap;">🔔 Subscribe</button>
+            <form style="display:flex; gap:10px; flex-wrap:wrap;" onsubmit="handleNewSubscriber(event)">
+                <input type="text" id="subNameInput" class="form-control" placeholder="Your Name / Studio" style="width:160px;" required>
+                <input type="text" id="subContactInput" class="form-control" placeholder="WhatsApp / Email" style="width:200px;" required>
+                <button type="submit" class="btn btn-gold">🔔 Subscribe</button>
             </form>
         </section>
 
-        <!-- DHT STUDIO WORK SECTION (WITH PIN-TO-TOP & REORDER) -->
+        <!-- DHT STUDIO WORK SECTION (PIN TO TOP ENABLED) -->
         <main class="work-section-wrap">
             <div class="work-headline-bar">
                 <div>
@@ -593,168 +215,18 @@
             <div class="direct-showcase-stream" id="dhtWorkStream"></div>
         </main>
 
-        <!-- CLIENT REVIEWS & STAR RATING SECTION -->
+        <!-- CLIENT REVIEWS -->
         <section class="reviews-section">
-            <div class="reviews-header">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px; border-bottom:1px solid var(--border); padding-bottom:15px;">
                 <div>
                     <h2 style="font-family:'Cinzel', serif; font-size:22px; color:var(--gold);">CLIENT RATINGS & REVIEWS</h2>
-                    <p style="font-size:12px; color:var(--text-gray); margin-top:3px;">Real experiences from client photographers and wedding families.</p>
+                    <p style="font-size:12px; color:var(--text-gray);">Trusted by partner studios across Purulia, Bengal & Jharkhand.</p>
                 </div>
-                <button type="button" class="btn btn-gold" onclick="openAddReviewModal()">⭐ Give Rating / Review</button>
+                <button type="button" class="btn btn-gold" onclick="openAddReviewModal()">⭐ Give Review</button>
             </div>
             <div class="reviews-grid" id="reviewsContainer"></div>
         </section>
 
-    </div>
-
-    <!-- MODAL: MASTER SECURITY PIN GATE -->
-    <div class="modal" id="pinGateModal">
-        <div class="modal-box" style="max-width: 380px; text-align: center;">
-            <span style="font-size:40px; color:var(--gold);">👑</span>
-            <h3 class="modal-title" id="pinGateTitle" style="margin: 8px 0 4px;">DHT STUDIO Master Security</h3>
-            <p style="font-size:12px; color:var(--text-gray); margin-bottom:15px;">Enter Security PIN to continue</p>
-            <input type="password" id="adminPinInput" class="form-control" style="text-align:center; font-size:24px; letter-spacing:8px; width:180px; margin:0 auto;" maxlength="6" autofocus>
-            <div class="modal-btns" style="justify-content:center;">
-                <button type="button" class="btn btn-dark" onclick="closeModal('pinGateModal')">Cancel</button>
-                <button type="button" class="btn btn-gold" onclick="executePinUnlock()">Unlock 🔓</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: ADD CLIENT REVIEW & RATING -->
-    <div class="modal" id="addReviewModal">
-        <div class="modal-box">
-            <h3 class="modal-title">⭐ Add Client Review & Rating</h3>
-            <div class="form-group">
-                <label>Your Name / Studio Name *</label>
-                <input type="text" id="revAuthor" class="form-control" placeholder="e.g. B.K Studio (Purulia)">
-            </div>
-            <div class="form-group">
-                <label>Select Star Rating *</label>
-                <select id="revStars" class="form-control">
-                    <option value="5">⭐⭐⭐⭐⭐ (5 Star - Excellent)</option>
-                    <option value="4">⭐⭐⭐⭐ (4 Star - Very Good)</option>
-                    <option value="3">⭐⭐⭐ (3 Star - Good)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Your Review / Experience *</label>
-                <textarea id="revComment" class="form-control" style="height:80px;" placeholder="Write a few lines about our video mixing or 3D album quality..."></textarea>
-            </div>
-            <div class="modal-btns">
-                <button type="button" class="btn btn-dark" onclick="closeModal('addReviewModal')">Cancel</button>
-                <button type="button" class="btn btn-gold" onclick="submitClientReview()">Submit Review</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: VIEW SUBSCRIBERS (ADMIN ONLY) -->
-    <div class="modal" id="subscribersModal">
-        <div class="modal-box" style="max-width: 650px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                <h3 class="modal-title" style="margin:0;">👥 Subscribed Followers List</h3>
-                <button type="button" class="btn btn-dark" style="font-size:11px;" onclick="closeModal('subscribersModal')">✕</button>
-            </div>
-            <div id="subscribersListContainer" style="max-height: 55vh; overflow-y:auto;"></div>
-        </div>
-    </div>
-
-    <!-- MODAL: HTML IMPORT FOR DHT WORK -->
-    <div class="modal" id="addWorkModal">
-        <div class="modal-box">
-            <h3 class="modal-title">+ Import New HTML Work (Direct View)</h3>
-            <div class="form-group">
-                <label>Project Title *</label>
-                <input type="text" id="workTitleInput" class="form-control" placeholder="e.g. Rahul & Priya 3D Photobook">
-            </div>
-            <div class="form-group">
-                <label>Category Tag</label>
-                <input type="text" id="workTagInput" class="form-control" placeholder="3D FLIPBOOK" value="3D FLIPBOOK">
-            </div>
-            <div class="form-group">
-                <label>Attach HTML File (Under 1MB)</label>
-                <input type="file" id="workFileInput" accept=".html,.htm" class="form-control" onchange="readImportHtmlFile(event)">
-                <small id="importAttachedInfo" style="color:var(--gold); font-size:11px;"></small>
-            </div>
-            <div class="form-group">
-                <label>Or Live URL Link (Recommended for 10MB+)</label>
-                <input type="text" id="workUrlInput" class="form-control" placeholder="https://dhtstudio.in/your-flipbook.html">
-            </div>
-            <div class="modal-btns">
-                <button type="button" class="btn btn-dark" onclick="closeModal('addWorkModal')">Cancel</button>
-                <button type="button" class="btn btn-gold" onclick="saveDirectHtmlWork()">Save at Top</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: EDIT SOCIAL LINKS (INSTAGRAM, FACEBOOK, YOUTUBE, WA) -->
-    <div class="modal" id="socialModal">
-        <div class="modal-box">
-            <h3 class="modal-title">✏️ Edit Neon Social Links</h3>
-            <div class="form-group"><label>Instagram Profile URL</label><input type="text" id="editInsta" class="form-control" placeholder="https://instagram.com/your_handle"></div>
-            <div class="form-group"><label>Facebook Page URL</label><input type="text" id="editFb" class="form-control" placeholder="https://facebook.com/your_page"></div>
-            <div class="form-group"><label>YouTube Channel URL</label><input type="text" id="editYt" class="form-control" placeholder="https://youtube.com/@your_channel"></div>
-            <div class="form-group"><label>WhatsApp Direct Link</label><input type="text" id="editWa" class="form-control" placeholder="https://wa.me/918372929859"></div>
-            <div class="modal-btns">
-                <button type="button" class="btn btn-dark" onclick="closeModal('socialModal')">Cancel</button>
-                <button type="button" class="btn btn-gold" onclick="saveSocialLinks()">Save Links</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: EDIT HERO TAGLINES -->
-    <div class="modal" id="heroEditModal">
-        <div class="modal-box">
-            <h3 class="modal-title">✏️ Edit Studio Taglines</h3>
-            <div class="form-group"><label>English</label><input type="text" id="editTagEn" class="form-control"></div>
-            <div class="form-group"><label>Hindi</label><input type="text" id="editTagHi" class="form-control"></div>
-            <div class="form-group"><label>Bengali</label><input type="text" id="editTagBn" class="form-control"></div>
-            <div class="modal-btns">
-                <button type="button" class="btn btn-dark" onclick="closeModal('heroEditModal')">Cancel</button>
-                <button type="button" class="btn btn-gold" onclick="saveHeroTaglines()">Update</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MASTER WORKSPACE: STUDIO 2027 BILLING & HISAB -->
-    <div class="modal" id="billingModal">
-        <div class="workspace-modal-box">
-            <div class="workspace-topbar">
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <span style="font-size:22px; color:var(--gold);">🧾</span>
-                    <div>
-                        <h3 style="font-family:'Cinzel', serif; font-size:17px; color:#fff;" id="billingHeaderTitle">DHT STUDIO HISAB-KITAB</h3>
-                        <p style="font-size:11px; color:var(--accent-green);">☁️ Firebase Ledger Synced</p>
-                    </div>
-                </div>
-                <div style="display:flex; gap:10px; align-items:center;">
-                    <button type="button" class="btn btn-gold" onclick="openNewJobForm()">+ New Billing Job</button>
-                    <button type="button" class="btn btn-dark" onclick="closeModal('billingModal')">✕ Close</button>
-                </div>
-            </div>
-            <div class="workspace-body">
-                <div class="billing-stats-grid" id="billingStatsGrid"></div>
-                <div id="billingJobsContainer"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: ADD / EDIT BILLING JOB -->
-    <div class="modal" id="jobEditModal">
-        <div class="modal-box" style="max-width: 620px;">
-            <h3 class="modal-title" id="jobModalTitle">Job Entry Form</h3>
-            <div class="form-group"><label>Client Name *</label><input type="text" id="jobClientName" class="form-control"></div>
-            <div style="display:flex; gap:10px;">
-                <div class="form-group" style="flex:1;"><label>Mobile / WhatsApp</label><input type="text" id="jobClientPhone" class="form-control"></div>
-                <div class="form-group" style="flex:1;"><label>Event Type</label><input type="text" id="jobEventName" class="form-control"></div>
-            </div>
-            <div class="form-group"><label>Total Bill Amount (₹) *</label><input type="number" id="jobTotalAmt" class="form-control"></div>
-            <div class="form-group"><label>Advance Received (₹)</label><input type="number" id="jobAdvAmt" class="form-control" placeholder="0"></div>
-            <div class="modal-btns">
-                <button type="button" class="btn btn-dark" onclick="closeModal('jobEditModal')">Cancel</button>
-                <button type="button" class="btn btn-gold" onclick="saveBillingJobRecord()">Save Job</button>
-            </div>
-        </div>
     </div>
 
     <!-- MASTER WORKSPACE: CUSTOMER DATA HUB -->
@@ -773,20 +245,87 @@
                     <button type="button" class="btn btn-dark" onclick="closeModal('customerWorkspaceModal')">✕ Close</button>
                 </div>
             </div>
+
             <div class="workspace-body">
+                <!-- SUB-VIEW 1: DIRECTORY LIST -->
                 <div id="custDirectorySubView">
+                    <div style="display:flex; justify-content:space-between; align-items:center; gap:15px; flex-wrap:wrap; margin-bottom:15px;">
+                        <input type="text" id="custSearchInput" class="form-control" style="max-width:320px;" placeholder="Search Customer / Phone / Studio..." oninput="filterWorkspaceCustomers()">
+                        <span id="custCountText" style="font-size:12px; color:var(--text-gray);">0 Customers</span>
+                    </div>
                     <div class="photographers-grid" id="workspaceCustomerGrid"></div>
+                </div>
+
+                <!-- SUB-VIEW 2: SELECTED CLIENT'S DATA & WORKS VAULT -->
+                <div id="custDetailSubView" style="display:none;">
+                    <div style="background:#11151f; border:1px solid var(--border); border-left:4px solid var(--gold); border-radius:10px; padding:18px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px;">
+                        <div>
+                            <button type="button" class="btn btn-dark" onclick="backToCustomerDirectory()" style="font-size:11px; padding:3px 8px; margin-bottom:6px;">← Back to Customers</button>
+                            <h3 id="wsCustStudioName" style="font-family:'Cinzel', serif; font-size:19px; color:#fff;">Studio Name</h3>
+                            <p id="wsCustInfoText" style="font-size:12px; color:var(--text-gray);">Phone • Location</p>
+                        </div>
+                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                            <button type="button" class="btn btn-gold" id="btnSwitchListView" onclick="switchCustomerTab('list')">📋 Customer Project List</button>
+                            <button type="button" class="btn btn-dark" id="btnSwitchShowcaseView" onclick="switchCustomerTab('showcase')">🌐 Live HTML Showcase</button>
+                            <button type="button" class="btn btn-gold editor-only" onclick="openAddWorkModal()">+ Add Work / Upload HTML Demo</button>
+                        </div>
+                    </div>
+
+                    <div id="tabCustListView">
+                        <div class="works-grid" id="customerWorksGrid"></div>
+                    </div>
+
+                    <div id="tabCustShowcaseView" style="display:none; flex-direction:column; gap:30px; margin-top:15px;"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: ADD PHOTOGRAPHER -->
+    <!-- MODAL: ADD / EDIT WORK (INSIDE CLIENT PROFILE) -->
+    <div class="modal" id="workModal">
+        <div class="modal-box">
+            <h3 class="modal-title">+ Add Work / Upload HTML Demo</h3>
+            <div class="form-group">
+                <label>Work Category *</label>
+                <select id="workCategory" class="form-control">
+                    <option value="Wedding Video Mixing">Wedding Video Mixing</option>
+                    <option value="Album Design">Album Design (12x36)</option>
+                    <option value="Prewedding Shoot">Pre-Wedding Shoot</option>
+                    <option value="HTML 3D Demo">Interactive HTML 3D Demo / Invite</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Project Title / Party Name *</label>
+                <input type="text" id="workTitle" class="form-control" placeholder="e.g. Rahul Weds Priya - Album Sheets">
+            </div>
+            <div class="form-group">
+                <label>Event Date / Note</label>
+                <input type="text" id="workDate" class="form-control" placeholder="e.g. 25 Dec 2026 | 30 Sheets Karizma">
+            </div>
+            <div class="form-group">
+                <label>Attach .HTML File (Direct from PC - Under 1MB)</label>
+                <input type="file" id="workHtmlFile" accept=".html,.htm" class="form-control" onchange="readCustomerHtmlFile(event)">
+                <small id="attachedFileName" style="font-size:11px; color:var(--gold); display:block; margin-top:4px;"></small>
+            </div>
+            <div class="form-group">
+                <label>Or Live URL Link (Recommended for 10MB+)</label>
+                <input type="text" id="workPreviewUrl" class="form-control" placeholder="https://dhtstudio.in/your-file.html">
+            </div>
+            <div class="modal-btns">
+                <button type="button" class="btn btn-dark" onclick="closeModal('workModal')">Cancel</button>
+                <button type="button" class="btn btn-gold" onclick="saveCustomerWorkItem()">Save Work</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD CUSTOMER -->
     <div class="modal" id="photographerModal">
         <div class="modal-box">
-            <h3 class="modal-title">+ Add Customer Photographer</h3>
-            <div class="form-group"><label>Studio / Brand Name *</label><input type="text" id="custStudioName" class="form-control"></div>
-            <div class="form-group"><label>Mobile Number *</label><input type="text" id="custPhone" class="form-control"></div>
+            <h3 class="modal-title">+ Add Customer Studio</h3>
+            <div class="form-group"><label>Studio / Brand Name *</label><input type="text" id="custStudioName" class="form-control" placeholder="e.g. B.K Studio"></div>
+            <div class="form-group"><label>Owner / Photographer Name</label><input type="text" id="custOwnerName" class="form-control" placeholder="e.g. Bikram"></div>
+            <div class="form-group"><label>Mobile Number *</label><input type="text" id="custPhone" class="form-control" placeholder="e.g. 9876543210"></div>
+            <div class="form-group"><label>Location / Area</label><input type="text" id="custLocation" class="form-control" placeholder="e.g. Purulia, W.B"></div>
             <div class="modal-btns">
                 <button type="button" class="btn btn-dark" onclick="closeModal('photographerModal')">Cancel</button>
                 <button type="button" class="btn btn-gold" onclick="savePhotographerData()">Save Live</button>
@@ -794,23 +333,252 @@
         </div>
     </div>
 
+    <!-- MASTER WORKSPACE: STUDIO BILLING & HISAB -->
+    <div class="modal" id="billingModal">
+        <div class="workspace-modal-box">
+            <div class="workspace-topbar">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:22px; color:var(--gold);">🧾</span>
+                    <div>
+                        <h3 style="font-family:'Cinzel', serif; font-size:17px; color:#fff;" id="billingHeaderTitle">DHT STUDIO HISAB-KITAB</h3>
+                        <p style="font-size:11px; color:var(--accent-green);">☁️ Firebase Ledger Synced</p>
+                    </div>
+                </div>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <button type="button" class="btn btn-gold" onclick="openNewJobForm()">+ New Billing Job</button>
+                    <button type="button" class="btn btn-dark" onclick="openBillingSettingsModal()">⚙️ Settings</button>
+                    <button type="button" class="btn btn-dark" onclick="closeModal('billingModal')">✕ Close</button>
+                </div>
+            </div>
+
+            <div class="workspace-body">
+                <div class="billing-stats-grid" id="billingStatsGrid"></div>
+
+                <div style="display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
+                    <input type="text" id="billingSearchInput" class="form-control" style="flex:1; min-width:240px;" placeholder="Search client / event / phone..." oninput="renderBillingLedger()">
+                    <select id="billingFilterSelect" class="form-control" style="width:200px;" onchange="renderBillingLedger()">
+                        <option value="all">All Jobs</option>
+                        <option value="due">With Balance Due</option>
+                        <option value="late">Overdue / Delayed</option>
+                        <option value="clear">Fully Paid</option>
+                    </select>
+                </div>
+
+                <div id="billingJobsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD / EDIT BILLING JOB (WITH FULL SERVICES) -->
+    <div class="modal" id="jobEditModal">
+        <div class="modal-box" style="max-width: 620px;">
+            <h3 class="modal-title" id="jobModalTitle">Job Entry Form</h3>
+            <input type="hidden" id="editJobId">
+            
+            <div class="form-group"><label>Client Name *</label><input type="text" id="jobClientName" class="form-control" placeholder="e.g. Amit Mukherjee"></div>
+
+            <div style="display:flex; gap:10px;">
+                <div class="form-group" style="flex:1;"><label>Mobile / WhatsApp</label><input type="text" id="jobClientPhone" class="form-control"></div>
+                <div class="form-group" style="flex:1;"><label>Event Type</label><input type="text" id="jobEventName" class="form-control" placeholder="Wedding / Rice Ceremony"></div>
+            </div>
+
+            <div class="form-group"><label>Event Date</label><input type="date" id="jobEventDate" class="form-control"></div>
+
+            <h4 style="font-size:12px; color:var(--gold); margin:12px 0 6px; text-transform:uppercase;">Included Services & Pricing (₹)</h4>
+            <div id="jobServicesRows"></div>
+
+            <div class="form-group" style="margin-top:10px;"><label>Discount Given (₹)</label><input type="number" id="jobDiscount" class="form-control" placeholder="0"></div>
+
+            <div id="advancePaymentBlock">
+                <h4 style="font-size:12px; color:var(--gold); margin:12px 0 6px; text-transform:uppercase;">Advance Received Now (₹)</h4>
+                <div style="display:flex; gap:8px;">
+                    <input type="number" id="jobAdvAmt" class="form-control" placeholder="Advance ₹" style="flex:1;">
+                    <input type="date" id="jobAdvDate" class="form-control" style="flex:1;">
+                    <select id="jobAdvMode" class="form-control" style="width:110px;">
+                        <option>Cash</option>
+                        <option>UPI</option>
+                        <option>Bank</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <div class="form-group" style="flex:1;"><label>Next Due Date</label><input type="date" id="jobNextDueDate" class="form-control"></div>
+                <div class="form-group" style="flex:1;"><label>Delivery Target Date</label><input type="date" id="jobDeliveryDate" class="form-control"></div>
+            </div>
+
+            <div class="form-group"><label>Notes / Work Specifications</label><textarea id="jobNotes" class="form-control" style="height:55px;"></textarea></div>
+
+            <div class="modal-btns">
+                <button type="button" class="btn btn-dark" onclick="closeModal('jobEditModal')">Cancel</button>
+                <button type="button" class="btn btn-gold" onclick="saveBillingJobRecord()">Save Job Record</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: VIEW BILLING JOB DETAILS & PAYMENTS -->
+    <div class="modal" id="jobDetailModal">
+        <div class="modal-box" style="max-width: 620px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:12px;">
+                <h3 class="modal-title" id="vdClientTitle" style="margin:0;">Client Account Details</h3>
+                <button type="button" class="btn btn-dark" style="padding:4px 8px; font-size:11px;" onclick="closeModal('jobDetailModal')">✕</button>
+            </div>
+            
+            <div id="vdMetaInfo" style="font-size:12.5px; color:var(--text-gray); margin-bottom:14px;"></div>
+
+            <div class="billing-stats-grid" style="grid-template-columns:repeat(3, 1fr); margin-bottom:14px;">
+                <div class="b-card"><small>Total Bill</small><b id="vdTotalBill">₹0</b></div>
+                <div class="b-card rec"><small>Received</small><b style="color:var(--accent-green);" id="vdTotalPaid">₹0</b></div>
+                <div class="b-card due"><small>Balance Due</small><b style="color:var(--accent-red);" id="vdTotalDue">₹0</b></div>
+            </div>
+
+            <h4 style="font-size:12px; color:var(--gold); text-transform:uppercase; margin-bottom:6px;">Service Breakdown</h4>
+            <div id="vdServicesList" style="margin-bottom:14px;"></div>
+
+            <h4 style="font-size:12px; color:var(--gold); text-transform:uppercase; margin-bottom:6px;">Payment History</h4>
+            <div id="vdPaymentHistory" style="margin-bottom:14px;"></div>
+
+            <div style="background:#090c12; border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:14px;">
+                <h4 style="font-size:11.5px; color:var(--gold); text-transform:uppercase; margin-bottom:8px;">+ Add New Payment</h4>
+                <div style="display:flex; gap:8px; margin-bottom:8px;">
+                    <input type="number" id="newPayAmt" class="form-control" placeholder="Amount ₹" style="flex:1;">
+                    <input type="date" id="newPayDate" class="form-control" style="flex:1;">
+                    <select id="newPayMode" class="form-control" style="width:105px;">
+                        <option>Cash</option>
+                        <option>UPI</option>
+                        <option>Bank</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-gold" onclick="submitNewPayment()">+ Add Payment</button>
+            </div>
+
+            <div style="display:flex; gap:8px; flex-wrap:wrap; border-top:1px solid var(--border); padding-top:14px;">
+                <button type="button" class="btn btn-dark" onclick="editCurrentJob()">✏️ Edit Job</button>
+                <button type="button" class="btn btn-dark" onclick="openInvoiceSlip()">🧾 Generate Receipt</button>
+                <button type="button" class="btn btn-green" onclick="sendWhatsAppBillingReminder()">💬 WhatsApp Reminder</button>
+                <button type="button" class="btn btn-red" onclick="deleteCurrentJob()">🗑️ Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: RECEIPT SLIP -->
+    <div class="modal" id="receiptModal">
+        <div class="modal-box">
+            <h3 class="modal-title">Official Billing Receipt</h3>
+            <textarea id="receiptTextOutput" class="form-control" style="height:220px; font-family:monospace; font-size:12px; line-height:1.5;" readonly></textarea>
+            <div class="modal-btns">
+                <button type="button" class="btn btn-dark" onclick="copyReceiptText()">📋 Copy Text</button>
+                <button type="button" class="btn btn-dark" onclick="closeModal('receiptModal')">✕ Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: BILLING SETTINGS -->
+    <div class="modal" id="billingSettingsModal">
+        <div class="modal-box">
+            <h3 class="modal-title">⚙️ Billing Settings</h3>
+            <div class="form-group"><label>Studio Name</label><input type="text" id="cfgStudioName" class="form-control" value="DHT STUDIO"></div>
+            <div class="form-group"><label>Phone Number</label><input type="text" id="cfgStudioPhone" class="form-control" value="+91 8372929859"></div>
+            <div class="form-group"><label>UPI ID (For WhatsApp Bills)</label><input type="text" id="cfgStudioUpi" class="form-control" placeholder="your-upi@bank"></div>
+            <div class="modal-btns">
+                <button type="button" class="btn btn-dark" onclick="closeModal('billingSettingsModal')">Cancel</button>
+                <button type="button" class="btn btn-gold" onclick="saveBillingSettings()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OTHER MODALS -->
+    <div class="modal" id="pinGateModal">
+        <div class="modal-box" style="max-width: 380px; text-align: center;">
+            <span style="font-size:40px; color:var(--gold);">👑</span>
+            <h3 class="modal-title" id="pinGateTitle" style="margin: 8px 0 4px;">DHT STUDIO Master Security</h3>
+            <p style="font-size:12px; color:var(--text-gray); margin-bottom:15px;">Enter Security PIN to continue</p>
+            <input type="password" id="adminPinInput" class="form-control" style="text-align:center; font-size:24px; letter-spacing:8px; width:180px; margin:0 auto;" maxlength="6" autofocus>
+            <div class="modal-btns" style="justify-content:center;">
+                <button type="button" class="btn btn-dark" onclick="closeModal('pinGateModal')">Cancel</button>
+                <button type="button" class="btn btn-gold" onclick="executePinUnlock()">Unlock 🔓</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addWorkModal">
+        <div class="modal-box">
+            <h3 class="modal-title">+ Import New HTML Work (Direct View)</h3>
+            <div class="form-group"><label>Project Title *</label><input type="text" id="workTitleInput" class="form-control"></div>
+            <div class="form-group"><label>Category Tag</label><input type="text" id="workTagInput" class="form-control" value="3D FLIPBOOK"></div>
+            <div class="form-group"><label>Attach HTML File (Under 1MB)</label><input type="file" id="workFileInput" accept=".html,.htm" class="form-control" onchange="readImportHtmlFile(event)"></div>
+            <div class="form-group"><label>Or Live URL Link (Recommended for 10MB+)</label><input type="text" id="workUrlInput" class="form-control" placeholder="https://dhtstudio.in/your-file.html"></div>
+            <div class="modal-btns">
+                <button type="button" class="btn btn-dark" onclick="closeModal('addWorkModal')">Cancel</button>
+                <button type="button" class="btn btn-gold" onclick="saveDirectHtmlWork()">Save at Top</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addReviewModal">
+        <div class="modal-box">
+            <h3 class="modal-title">⭐ Add Client Review & Rating</h3>
+            <div class="form-group"><label>Name / Studio *</label><input type="text" id="revAuthor" class="form-control"></div>
+            <div class="form-group">
+                <label>Star Rating *</label>
+                <select id="revStars" class="form-control">
+                    <option value="5">⭐⭐⭐⭐⭐ (5 Star)</option>
+                    <option value="4">⭐⭐⭐⭐ (4 Star)</option>
+                    <option value="3">⭐⭐⭐ (3 Star)</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Review *</label><textarea id="revComment" class="form-control" style="height:70px;"></textarea></div>
+            <div class="modal-btns">
+                <button type="button" class="btn btn-dark" onclick="closeModal('addReviewModal')">Cancel</button>
+                <button type="button" class="btn btn-gold" onclick="submitClientReview()">Submit Review</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="subscribersModal">
+        <div class="modal-box">
+            <h3 class="modal-title">👥 Subscribed Followers</h3>
+            <div id="subscribersListContainer" style="max-height: 55vh; overflow-y:auto;"></div>
+            <div class="modal-btns"><button type="button" class="btn btn-dark" onclick="closeModal('subscribersModal')">✕ Close</button></div>
+        </div>
+    </div>
+
+    <div class="modal" id="socialModal">
+        <div class="modal-box">
+            <h3 class="modal-title">✏️ Edit Social Links</h3>
+            <div class="form-group"><label>Instagram</label><input type="text" id="editInsta" class="form-control"></div>
+            <div class="form-group"><label>Facebook</label><input type="text" id="editFb" class="form-control"></div>
+            <div class="form-group"><label>YouTube</label><input type="text" id="editYt" class="form-control"></div>
+            <div class="form-group"><label>WhatsApp</label><input type="text" id="editWa" class="form-control"></div>
+            <div class="modal-btns">
+                <button type="button" class="btn btn-dark" onclick="closeModal('socialModal')">Cancel</button>
+                <button type="button" class="btn btn-gold" onclick="saveSocialLinks()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="heroEditModal">
+        <div class="modal-box">
+            <h3 class="modal-title">✏️ Edit Taglines</h3>
+            <div class="form-group"><label>English</label><input type="text" id="editTagEn" class="form-control"></div>
+            <div class="form-group"><label>Hindi</label><input type="text" id="editTagHi" class="form-control"></div>
+            <div class="form-group"><label>Bengali</label><input type="text" id="editTagBn" class="form-control"></div>
+            <div class="modal-btns">
+                <button type="button" class="btn btn-dark" onclick="closeModal('heroEditModal')">Cancel</button>
+                <button type="button" class="btn btn-gold" onclick="saveHeroTaglines()">Update</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div style="font-family:'Cinzel', serif; font-size:1.3rem; font-weight:900; color:#fff;">DHT STUDIO</div>
-        <p class="footer-address">Vill-dibritikar, P.O-iloo, P.S-Jhalda, Dist-Purulia (W.B) Pin-723212</p>
+        <p style="font-size:12.5px; color:var(--text-gray); margin-top:6px;">Vill-dibritikar, P.O-iloo, P.S-Jhalda, Dist-Purulia (W.B) Pin-723212</p>
         <p style="margin-top:6px; color:var(--gold-light); font-weight:700;">Helpline / WhatsApp: +91 8372929859</p>
-        <p style="font-size:11px; color:#475569; margin-top:12px;">© 2026 DHT STUDIO. Master Production & Financial Hub.</p>
     </footer>
 
     <script>
-        function openModal(id) {
-            const el = document.getElementById(id);
-            if (el) el.style.setProperty("display", "flex", "important");
-        }
-
-        function closeModal(id) {
-            const el = document.getElementById(id);
-            if (el) el.style.setProperty("display", "none", "important");
-        }
+        function openModal(id) { const el = document.getElementById(id); if (el) el.style.setProperty("display", "flex", "important"); }
+        function closeModal(id) { const el = document.getElementById(id); if (el) el.style.setProperty("display", "none", "important"); }
 
         const firebaseConfig = {
             apiKey: "AIzaSyD2uDKRwB6rCIEJJAMhC0YahWUJOewrTAI",
@@ -826,9 +594,7 @@
         try {
             if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
-        } catch (e) {
-            console.error("Firebase init:", e);
-        }
+        } catch (e) { console.error("Firebase init:", e); }
 
         const MASTER_ADMIN_PIN = "8372";
         let pinPurpose = "admin";
@@ -866,21 +632,580 @@
                 } else {
                     document.body.classList.remove("presentation-mode");
                     document.getElementById("presentationBtn").textContent = "🔓 Lock Admin";
-                    alert("Master Edit Mode Active! Ab saare edit, pin aur social options khul gaye hain.");
+                    alert("Master Edit Mode Active! Ab saare edit aur internal client options khul gaye hain.");
                 }
             } else {
                 alert("Galat PIN! Access Denied.");
             }
         }
 
-        /* 1. 3D WORK STREAM WITH PIN TO TOP & REORDER */
+        /* 1. CUSTOMER WORKSPACE ENGINE (CLIENT & WORK VAULT) */
+        let globalCustomersList = [];
+        let activeCustId = null;
+        let uploadedCustHtmlText = "";
+
+        function openCustomerWorkspace() {
+            openModal("customerWorkspaceModal");
+            backToCustomerDirectory();
+        }
+
+        function openCustomerDetail(id) {
+            activeCustId = id;
+            const cust = globalCustomersList.find(c => c.id === id);
+            if (!cust) return;
+
+            document.getElementById("custDirectorySubView").style.display = "none";
+            document.getElementById("custDetailSubView").style.display = "block";
+            document.getElementById("wsTopTitle").textContent = `${cust.studio} Workspace`;
+            document.getElementById("wsCustStudioName").textContent = cust.studio;
+            document.getElementById("wsCustInfoText").textContent = `Owner: ${cust.owner || 'N/A'} • Phone: +91 ${cust.phone} • Location: ${cust.location || 'N/A'}`;
+
+            switchCustomerTab('list');
+            renderCustomerWorks(cust.works || []);
+        }
+
+        function backToCustomerDirectory() {
+            activeCustId = null;
+            document.getElementById("custDetailSubView").style.display = "none";
+            document.getElementById("custDirectorySubView").style.display = "block";
+            document.getElementById("wsTopTitle").textContent = "CUSTOMER DIRECTORY";
+        }
+
+        function switchCustomerTab(tabName) {
+            const btnList = document.getElementById("btnSwitchListView");
+            const btnShow = document.getElementById("btnSwitchShowcaseView");
+            const viewList = document.getElementById("tabCustListView");
+            const viewShow = document.getElementById("tabCustShowcaseView");
+
+            if (tabName === 'list') {
+                btnList.className = "btn btn-gold";
+                btnShow.className = "btn btn-dark";
+                viewList.style.display = "block";
+                viewShow.style.display = "none";
+            } else {
+                btnList.className = "btn btn-dark";
+                btnShow.className = "btn btn-gold";
+                viewList.style.display = "none";
+                viewShow.style.display = "flex";
+            }
+        }
+
+        function renderCustomerWorks(works) {
+            const grid = document.getElementById("customerWorksGrid");
+            const stream = document.getElementById("tabCustShowcaseView");
+            grid.innerHTML = "";
+            stream.innerHTML = "";
+
+            if (!works || works.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:var(--text-gray); border:1px dashed var(--border); border-radius:8px;">No projects yet. Click "+ Add Work / Upload HTML Demo" above.</div>`;
+                stream.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-gray); border:1px dashed var(--border); border-radius:8px;">No live HTML showcase available.</div>`;
+                return;
+            }
+
+            works.forEach((w, idx) => {
+                const card = document.createElement("div");
+                card.className = "work-item-card";
+                card.innerHTML = `
+                    <div class="work-preview">
+                        <span style="font-size:38px; color:var(--gold);">🎬</span>
+                    </div>
+                    <div class="work-info">
+                        <div style="font-size:10px; color:var(--gold); font-weight:700;">${w.cat}</div>
+                        <h4 style="font-size:14px; font-weight:700; color:#fff; margin:4px 0;">${w.title}</h4>
+                        <div style="font-size:11px; color:#8b92a4; margin-bottom:10px;">📅 ${w.date || 'Recent'}</div>
+                        <button type="button" class="btn btn-red editor-only" style="font-size:10px; padding:3px 8px;" onclick="deleteCustomerWork(${idx})">🗑️ Delete Work</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+
+                if (w.htmlData || w.url) {
+                    const block = document.createElement("div");
+                    block.className = "showcase-block";
+                    const srcDoc = w.htmlData ? `srcdoc="${w.htmlData.replace(/"/g, '"')}"` : "";
+                    const src = w.url ? `src="${w.url}"` : "";
+                    block.innerHTML = `
+                        <div class="block-controller-bar">
+                            <div>
+                                <h3>${w.title}</h3>
+                                <p style="font-size:11.5px; color:var(--text-gray);">🏷️ ${w.cat} • 📅 ${w.date || 'Active'}</p>
+                            </div>
+                        </div>
+                        <div class="showcase-canvas-wrap">
+                            <iframe class="showcase-iframe" ${src} ${srcDoc} loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+                        </div>
+                    `;
+                    stream.appendChild(block);
+                }
+            });
+        }
+
+        function openAddWorkModal() {
+            document.getElementById('workTitle').value = '';
+            document.getElementById('workDate').value = '';
+            document.getElementById('workPreviewUrl').value = '';
+            document.getElementById('attachedFileName').textContent = '';
+            uploadedCustHtmlText = "";
+            openModal('workModal');
+        }
+
+        function readCustomerHtmlFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = evt => {
+                uploadedCustHtmlText = evt.target.result;
+                document.getElementById('attachedFileName').textContent = `✅ Attached: ${file.name}`;
+                if (!document.getElementById('workTitle').value) document.getElementById('workTitle').value = file.name.replace(/\.[^/.]+$/, "");
+            };
+            reader.readAsText(file);
+        }
+
+        function saveCustomerWorkItem() {
+            const title = document.getElementById('workTitle').value.trim();
+            if (!title) { alert('Project title is required!'); return; }
+            const cust = globalCustomersList.find(c => c.id === activeCustId);
+            if (!cust) return;
+
+            const updatedWorks = cust.works ? [...cust.works] : [];
+            updatedWorks.unshift({
+                id: Date.now(),
+                cat: document.getElementById('workCategory').value,
+                title: title,
+                date: document.getElementById('workDate').value.trim() || 'Recent',
+                url: document.getElementById('workPreviewUrl').value.trim(),
+                htmlData: uploadedCustHtmlText
+            });
+
+            if (db) {
+                db.collection("photographers").doc(activeCustId).update({ works: updatedWorks }).then(() => {
+                    closeModal('workModal');
+                    alert("Work successfully saved to client profile!");
+                });
+            }
+        }
+
+        function deleteCustomerWork(idx) {
+            if (!confirm("Are you sure you want to delete this work from client?")) return;
+            const cust = globalCustomersList.find(c => c.id === activeCustId);
+            if (!cust) return;
+
+            const updatedWorks = [...cust.works];
+            updatedWorks.splice(idx, 1);
+            db.collection("photographers").doc(activeCustId).update({ works: updatedWorks });
+        }
+
+        function openAddPhotographerModal() {
+            document.getElementById("custStudioName").value = "";
+            document.getElementById("custOwnerName").value = "";
+            document.getElementById("custPhone").value = "";
+            document.getElementById("custLocation").value = "";
+            openModal("photographerModal");
+        }
+
+        function savePhotographerData() {
+            const sName = document.getElementById("custStudioName").value.trim();
+            const phone = document.getElementById("custPhone").value.trim();
+            if (!sName || !phone) { alert("Studio name aur mobile zaroori hai!"); return; }
+
+            if (db) {
+                db.collection("photographers").add({
+                    studio: sName,
+                    owner: document.getElementById("custOwnerName").value.trim(),
+                    phone: phone,
+                    location: document.getElementById("custLocation").value.trim() || 'Purulia, W.B',
+                    works: [],
+                    timestamp: Date.now()
+                }).then(() => {
+                    closeModal("photographerModal");
+                    alert("Customer add ho gaya!");
+                });
+            }
+        }
+
+        function syncCustomerPhotographers() {
+            if (!db) return;
+            db.collection("photographers").onSnapshot(snapshot => {
+                globalCustomersList = [];
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    d.id = doc.id;
+                    globalCustomersList.push(d);
+                });
+                renderWorkspaceCustomers(globalCustomersList);
+                if (activeCustId) {
+                    const current = globalCustomersList.find(c => c.id === activeCustId);
+                    if (current) renderCustomerWorks(current.works || []);
+                }
+            });
+        }
+
+        function renderWorkspaceCustomers(list) {
+            const grid = document.getElementById("workspaceCustomerGrid");
+            if (!grid) return;
+            grid.innerHTML = "";
+            document.getElementById("custCountText").textContent = `${list.length} Customers Available`;
+
+            list.forEach(c => {
+                const card = document.createElement("div");
+                card.className = "photographer-card";
+                card.innerHTML = `
+                    <div>
+                        <h4 class="studio-client-name" onclick="openCustomerDetail('${c.id}')">${c.studio}</h4>
+                        <p style="font-size:12px; color:var(--text-gray);">Owner: ${c.owner || 'N/A'}</p>
+                        <div class="client-meta">
+                            <span>📞 +91 ${c.phone}</span>
+                            <span>📍 ${c.location || 'Local Area'}</span>
+                            <span style="color:var(--gold);">📁 ${c.works ? c.works.length : 0} Projects</span>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:6px; margin-top:10px;">
+                        <button type="button" class="btn btn-gold" style="flex:1; font-size:11.5px;" onclick="openCustomerDetail('${c.id}')">📂 Open Workspace</button>
+                        <a href="https://wa.me/91${c.phone.replace(/\D/g,'')}" target="_blank" class="btn btn-green" style="font-size:11px;">💬 WA</a>
+                        <button type="button" class="btn btn-red editor-only" style="font-size:11px;" onclick="db.collection('photographers').doc('${c.id}').delete()">🗑️</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterWorkspaceCustomers() {
+            const term = document.getElementById('custSearchInput').value.toLowerCase();
+            const filtered = globalCustomersList.filter(c => 
+                (c.studio || '').toLowerCase().includes(term) || (c.owner || '').toLowerCase().includes(term) || (c.phone || '').includes(term)
+            );
+            renderWorkspaceCustomers(filtered);
+        }
+
+        /* 2. COMPLETE STUDIO BILLING & HISAB ENGINE */
+        const DEFAULT_SERVICES = [
+            "Wedding Video Editing",
+            "Audio Mixing & Mastering",
+            "DaVinci Color Grading",
+            "12x36 Album Design",
+            "Cinematic Teaser / Reel"
+        ];
+        let billingJobs = [];
+        let billingConfig = { studio: "DHT STUDIO", phone: "+91 8372929859", upi: "" };
+        let activeJobId = null;
+
+        const inr = n => "₹" + Math.round(+n || 0).toLocaleString("en-IN");
+        const getIsoDate = () => new Date().toISOString().slice(0, 10);
+        const formatDate = s => s ? s.split("-").reverse().join("/") : "—";
+        const calcJobTotal = j => (j.services || []).reduce((sum, s) => sum + (+s.a || 0), 0) - (+j.discount || 0);
+        const calcJobPaid = j => (j.pays || []).reduce((sum, p) => sum + (+p.a || 0), 0);
+        const calcJobDue = j => calcJobTotal(j) - calcJobPaid(j);
+        const isJobOverdue = j => calcJobDue(j) > 0 && j.nextDate && j.nextDate < getIsoDate();
+
+        function renderBillingLedger() {
+            const billed = billingJobs.reduce((sum, j) => sum + calcJobTotal(j), 0);
+            const received = billingJobs.reduce((sum, j) => sum + calcJobPaid(j), 0);
+            const pending = billingJobs.reduce((sum, j) => sum + Math.max(calcJobDue(j), 0), 0);
+
+            document.getElementById("billingStatsGrid").innerHTML = `
+                <div class="b-card"><small>Total Billed</small><b>${inr(billed)}</b></div>
+                <div class="b-card rec"><small>Received</small><b style="color:var(--accent-green);">${inr(received)}</b></div>
+                <div class="b-card due"><small>Total Due</small><b style="color:var(--accent-red);">${inr(pending)}</b></div>
+            `;
+
+            const q = document.getElementById("billingSearchInput").value.trim().toLowerCase();
+            const f = document.getElementById("billingFilterSelect").value;
+
+            let filtered = billingJobs.filter(j => {
+                if (q && !((j.client || "") + (j.event || "") + (j.phone || "")).toLowerCase().includes(q)) return false;
+                if (f === "due") return calcJobDue(j) > 0;
+                if (f === "late") return isJobOverdue(j);
+                if (f === "clear") return calcJobDue(j) <= 0 && calcJobTotal(j) > 0;
+                return true;
+            });
+
+            const container = document.getElementById("billingJobsContainer");
+            if (filtered.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-gray); border:1px dashed var(--border); border-radius:10px;">No billing records found. Click "+ New Billing Job" above.</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(j => {
+                const tot = calcJobTotal(j);
+                const pd = calcJobPaid(j);
+                const due = tot - pd;
+                const pct = tot > 0 ? Math.min(100, Math.round((pd / tot) * 100)) : 0;
+                const overdue = isJobOverdue(j);
+
+                return `
+                    <div class="job-card ${overdue ? 'late' : ''}" onclick="viewJobDetails('${j.id}')">
+                        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                            <b style="font-size:16px; color:#fff;">${j.client}</b>
+                            <b style="font-size:15px; color:${due > 0 ? 'var(--accent-red)' : 'var(--accent-green)'};">
+                                ${due > 0 ? inr(due) + ' Due' : '✓ Fully Paid'}
+                            </b>
+                        </div>
+                        <div style="font-size:12.5px; color:var(--text-gray); margin-top:2px;">
+                            ${j.event || 'Project'} • Phone: ${j.phone || 'N/A'} ${j.delivery ? ' • Delivery ' + formatDate(j.delivery) : ''}
+                        </div>
+                        <div class="job-bar"><div class="job-bar-fill" style="width:${pct}%;"></div></div>
+                        <div style="display:flex; justify-content:space-between; font-size:11.5px; color:#cbd5e1;">
+                            <span>Total ${inr(tot)} • Received ${inr(pd)}</span>
+                            <span>${due > 0 && j.nextDate ? '📅 Next: ' + formatDate(j.nextDate) : ''}</span>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function viewJobDetails(id) {
+            const j = billingJobs.find(x => x.id === id);
+            if (!j) return;
+            activeJobId = id;
+
+            const tot = calcJobTotal(j);
+            const pd = calcJobPaid(j);
+            const due = tot - pd;
+
+            document.getElementById("vdClientTitle").textContent = j.client;
+            document.getElementById("vdMetaInfo").textContent = `${j.event || 'Project'} • Phone: ${j.phone || 'N/A'} • Event Date: ${formatDate(j.eventDate)}`;
+            document.getElementById("vdTotalBill").textContent = inr(tot);
+            document.getElementById("vdTotalPaid").textContent = inr(pd);
+            document.getElementById("vdTotalDue").textContent = inr(due);
+
+            document.getElementById("vdServicesList").innerHTML = (j.services || []).map(s => `
+                <div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dashed var(--border); font-size:13px;">
+                    <span>${s.n}</span><b>${inr(s.a)}</b>
+                </div>
+            `).join("") + (j.discount ? `<div style="display:flex; justify-content:space-between; padding:4px 0; font-size:13px; color:var(--accent-red);"><span>Discount</span><b>− ${inr(j.discount)}</b></div>` : '');
+
+            document.getElementById("vdPaymentHistory").innerHTML = (j.pays || []).map((p, idx) => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:12.5px;">
+                    <span>${formatDate(p.d)} • ${p.m || 'Cash'}</span>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <b style="color:var(--accent-green);">${inr(p.a)}</b>
+                        <button type="button" class="btn btn-red" style="padding:2px 6px; font-size:10px;" onclick="deleteJobPayment(${idx})">✕</button>
+                    </div>
+                </div>
+            `).join("") || `<p style="font-size:12px; color:var(--text-gray);">No payment entries yet.</p>`;
+
+            document.getElementById("newPayAmt").value = "";
+            document.getElementById("newPayDate").value = getIsoDate();
+            openModal("jobDetailModal");
+        }
+
+        function openNewJobForm() {
+            activeJobId = null;
+            document.getElementById("jobModalTitle").textContent = "New Billing Job";
+            document.getElementById("editJobId").value = "";
+            document.getElementById("jobClientName").value = "";
+            document.getElementById("jobClientPhone").value = "";
+            document.getElementById("jobEventName").value = "";
+            document.getElementById("jobEventDate").value = "";
+            document.getElementById("jobDiscount").value = "";
+            document.getElementById("jobNextDueDate").value = "";
+            document.getElementById("jobDeliveryDate").value = "";
+            document.getElementById("jobNotes").value = "";
+            document.getElementById("advancePaymentBlock").style.display = "block";
+            document.getElementById("jobAdvAmt").value = "";
+            document.getElementById("jobAdvDate").value = getIsoDate();
+
+            renderJobServiceInputs([]);
+            openModal("jobEditModal");
+        }
+
+        function editCurrentJob() {
+            const j = billingJobs.find(x => x.id === activeJobId);
+            if (!j) return;
+
+            document.getElementById("jobModalTitle").textContent = "Edit Billing Job";
+            document.getElementById("editJobId").value = j.id;
+            document.getElementById("jobClientName").value = j.client || "";
+            document.getElementById("jobClientPhone").value = j.phone || "";
+            document.getElementById("jobEventName").value = j.event || "";
+            document.getElementById("jobEventDate").value = j.eventDate || "";
+            document.getElementById("jobDiscount").value = j.discount || "";
+            document.getElementById("jobNextDueDate").value = j.nextDate || "";
+            document.getElementById("jobDeliveryDate").value = j.delivery || "";
+            document.getElementById("jobNotes").value = j.notes || "";
+            document.getElementById("advancePaymentBlock").style.display = "none";
+
+            renderJobServiceInputs(j.services || []);
+            closeModal("jobDetailModal");
+            openModal("jobEditModal");
+        }
+
+        function renderJobServiceInputs(existingServices) {
+            const container = document.getElementById("jobServicesRows");
+            container.innerHTML = "";
+
+            DEFAULT_SERVICES.forEach(sName => {
+                const found = existingServices.find(s => s.n === sName);
+                const val = found ? found.a : "";
+                const row = document.createElement("div");
+                row.style.cssText = "display:flex; gap:8px; margin-bottom:6px;";
+                row.innerHTML = `
+                    <label style="flex:1; font-size:12.5px; align-self:center;">${sName}</label>
+                    <input type="number" class="form-control default-service-amt" data-name="${sName}" value="${val}" placeholder="₹" style="width:120px;">
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function saveBillingJobRecord() {
+            const name = document.getElementById("jobClientName").value.trim();
+            if (!name) { alert("Please enter Client Name!"); return; }
+
+            const id = document.getElementById("editJobId").value;
+            const sv = [];
+            document.querySelectorAll(".default-service-amt").forEach(inp => {
+                const amt = +inp.value;
+                if (amt > 0) sv.push({ n: inp.dataset.name, a: amt });
+            });
+
+            const jobData = {
+                client: name,
+                phone: document.getElementById("jobClientPhone").value.trim(),
+                event: document.getElementById("jobEventName").value.trim(),
+                eventDate: document.getElementById("jobEventDate").value,
+                services: sv,
+                discount: +document.getElementById("jobDiscount").value || 0,
+                nextDate: document.getElementById("jobNextDueDate").value,
+                delivery: document.getElementById("jobDeliveryDate").value,
+                notes: document.getElementById("jobNotes").value.trim()
+            };
+
+            if (id) {
+                db.collection("jobs").doc(id).update(jobData).then(() => {
+                    closeModal("jobEditModal");
+                    alert("Job updated live!");
+                });
+            } else {
+                jobData.created = getIsoDate();
+                jobData.pays = [];
+                const adv = +document.getElementById("jobAdvAmt").value;
+                if (adv > 0) {
+                    jobData.pays.push({
+                        d: document.getElementById("jobAdvDate").value || getIsoDate(),
+                        a: adv,
+                        m: document.getElementById("jobAdvMode").value
+                    });
+                }
+                db.collection("jobs").add(jobData).then(() => {
+                    closeModal("jobEditModal");
+                    alert("New job saved live to Firebase!");
+                });
+            }
+        }
+
+        function submitNewPayment() {
+            const amt = +document.getElementById("newPayAmt").value;
+            if (!(amt > 0)) { alert("Enter valid amount!"); return; }
+            const j = billingJobs.find(x => x.id === activeJobId);
+            if (!j) return;
+
+            const updatedPays = j.pays ? [...j.pays] : [];
+            updatedPays.push({
+                d: document.getElementById("newPayDate").value || getIsoDate(),
+                a: amt,
+                m: document.getElementById("newPayMode").value
+            });
+
+            db.collection("jobs").doc(activeJobId).update({ pays: updatedPays }).then(() => {
+                alert("Payment added successfully!");
+            });
+        }
+
+        function deleteJobPayment(idx) {
+            if (!confirm("Remove this payment entry?")) return;
+            const j = billingJobs.find(x => x.id === activeJobId);
+            if (!j) return;
+
+            const updatedPays = [...j.pays];
+            updatedPays.splice(idx, 1);
+            db.collection("jobs").doc(activeJobId).update({ pays: updatedPays });
+        }
+
+        function deleteCurrentJob() {
+            if (!confirm("Are you sure you want to DELETE this entire job record?")) return;
+            db.collection("jobs").doc(activeJobId).delete().then(() => {
+                closeModal("jobDetailModal");
+            });
+        }
+
+        function sendWhatsAppBillingReminder() {
+            const j = billingJobs.find(x => x.id === activeJobId);
+            if (!j) return;
+            const d = (j.phone || "").replace(/\D/g, "");
+            const n = d.length === 10 ? "91" + d : d;
+            const due = inr(calcJobDue(j));
+            const upi = billingConfig.upi ? `\nUPI ID: ${billingConfig.upi}` : "";
+            const msg = `Hello ${j.client},\nPayment reminder from ${billingConfig.studio}: Balance payment of ${due} is pending for ${j.event || 'your project'}.${upi}\nThank you!`;
+            window.open(`https://wa.me/${n}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function openInvoiceSlip() {
+            const j = billingJobs.find(x => x.id === activeJobId);
+            if (!j) return;
+            let lines = [
+                `${billingConfig.studio} • INVOICE`,
+                `Client: ${j.client} (${j.event || 'Project'})`,
+                `Phone: ${j.phone || 'N/A'}`,
+                `---------------------------------`,
+                `Total Bill: ${inr(calcJobTotal(j))}`,
+                `Total Received: ${inr(calcJobPaid(j))}`,
+                `Balance Due: ${inr(calcJobDue(j))}`,
+                `Date: ${formatDate(getIsoDate())}`
+            ];
+            document.getElementById("receiptTextOutput").value = lines.join("\n");
+            openModal("receiptModal");
+        }
+
+        function copyReceiptText() {
+            const el = document.getElementById("receiptTextOutput");
+            el.select();
+            navigator.clipboard.writeText(el.value).then(() => alert("Receipt text copied!"));
+        }
+
+        function openBillingSettingsModal() {
+            document.getElementById("cfgStudioName").value = billingConfig.studio || "DHT STUDIO";
+            document.getElementById("cfgStudioPhone").value = billingConfig.phone || "+91 8372929859";
+            document.getElementById("cfgStudioUpi").value = billingConfig.upi || "";
+            openModal("billingSettingsModal");
+        }
+
+        function saveBillingSettings() {
+            billingConfig.studio = document.getElementById("cfgStudioName").value.trim();
+            billingConfig.phone = document.getElementById("cfgStudioPhone").value.trim();
+            billingConfig.upi = document.getElementById("cfgStudioUpi").value.trim();
+
+            db.collection("settings").doc("studio_billing").set(billingConfig).then(() => {
+                closeModal("billingSettingsModal");
+                alert("Billing settings saved!");
+            });
+        }
+
+        function syncBillingFirestore() {
+            if (!db) return;
+            db.collection("jobs").onSnapshot(snapshot => {
+                billingJobs = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    billingJobs.push(data);
+                });
+                renderBillingLedger();
+                if (activeJobId) viewJobDetails(activeJobId);
+            });
+
+            db.collection("settings").doc("studio_billing").onSnapshot(doc => {
+                if (doc.exists) {
+                    billingConfig = Object.assign(billingConfig, doc.data());
+                    document.getElementById("billingHeaderTitle").textContent = `${billingConfig.studio} HISAB-KITAB`;
+                }
+            });
+        }
+
+        /* 3. PIN TO TOP 3D WORK STREAM */
         function openAddHtmlWorkModal() {
             document.getElementById("workTitleInput").value = "";
             document.getElementById("workTagInput").value = "3D FLIPBOOK";
             document.getElementById("workUrlInput").value = "";
-            const fileInp = document.getElementById("workFileInput");
-            if (fileInp) fileInp.value = "";
-            document.getElementById("importAttachedInfo").textContent = "";
+            if (document.getElementById("workFileInput")) document.getElementById("workFileInput").value = "";
             uploadedImportHtmlText = "";
             openModal("addWorkModal");
         }
@@ -891,7 +1216,6 @@
             const reader = new FileReader();
             reader.onload = evt => {
                 uploadedImportHtmlText = evt.target.result;
-                document.getElementById("importAttachedInfo").textContent = `Attached: ${file.name}`;
                 if (!document.getElementById("workTitleInput").value) {
                     document.getElementById("workTitleInput").value = file.name.replace(/\.[^/.]+$/, "");
                 }
@@ -904,8 +1228,8 @@
             const tag = document.getElementById("workTagInput").value.trim() || "3D FLIPBOOK";
             const url = document.getElementById("workUrlInput").value.trim();
 
-            if (!title) { alert("Project Title daalna zaroori hai!"); return; }
-            if (!uploadedImportHtmlText && !url) { alert("HTML file attach karein ya Live URL link daalein!"); return; }
+            if (!title) { alert("Project Title is required!"); return; }
+            if (!uploadedImportHtmlText && !url) { alert("Select HTML file or enter URL!"); return; }
 
             const payload = {
                 title: title,
@@ -920,16 +1244,14 @@
                 db.collection("dht_works").add(payload).then(() => {
                     closeModal("addWorkModal");
                     alert("3D Work live showcase mein add ho gaya!");
-                }).catch(err => alert("Error saving: " + err.message));
+                });
             }
         }
 
         function togglePinWork(docId, currentPinState) {
             if (!db) return;
-            db.collection("dht_works").doc(docId).update({
-                pinned: !currentPinState
-            }).then(() => {
-                alert(currentPinState ? "Unpinned successfully!" : "📌 Pinned to Top successfully!");
+            db.collection("dht_works").doc(docId).update({ pinned: !currentPinState }).then(() => {
+                alert(currentPinState ? "Unpinned!" : "📌 Pinned to Top!");
             });
         }
 
@@ -946,7 +1268,6 @@
                     works.push(d);
                 });
 
-                // Pinned works come first, then newest
                 works.sort((a, b) => {
                     if (a.pinned && !b.pinned) return -1;
                     if (!a.pinned && b.pinned) return 1;
@@ -961,12 +1282,12 @@
                     
                     block.innerHTML = `
                         <div class="block-controller-bar">
-                            <div class="block-title-box">
+                            <div>
                                 <h3>
                                     ${data.pinned ? '⭐ ' : ''}${data.title}
-                                    ${data.pinned ? '<span style="font-size:11px; color:var(--gold); border:1px solid var(--gold); border-radius:12px; padding:2px 8px;">PINNED AT TOP</span>' : ''}
+                                    ${data.pinned ? '<span style="font-size:11px; color:var(--gold); border:1px solid var(--gold); border-radius:12px; padding:2px 8px; margin-left:8px;">PINNED AT TOP</span>' : ''}
                                 </h3>
-                                <p>🏷️ ${data.tag || 'Interactive Work'}</p>
+                                <p style="font-size:11.5px; color:var(--text-gray);">🏷️ ${data.tag || 'Interactive Work'}</p>
                             </div>
                             <div style="display:flex; gap:8px;">
                                 <button type="button" class="btn btn-dark editor-only" style="font-size:11px;" onclick="togglePinWork('${data.id}', ${data.pinned ? true : false})">
@@ -984,7 +1305,7 @@
             });
         }
 
-        /* 2. REVIEWS & RATINGS SYSTEM */
+        /* 4. REVIEWS & SUBSCRIBERS */
         function openAddReviewModal() {
             document.getElementById("revAuthor").value = "";
             document.getElementById("revComment").value = "";
@@ -996,18 +1317,13 @@
             const stars = +document.getElementById("revStars").value || 5;
             const comment = document.getElementById("revComment").value.trim();
 
-            if (!author || !comment) { alert("Please fill your Name and Review!"); return; }
+            if (!author || !comment) { alert("Please fill Name and Review!"); return; }
 
             if (db) {
-                db.collection("client_reviews").add({
-                    author: author,
-                    stars: stars,
-                    comment: comment,
-                    timestamp: Date.now()
-                }).then(() => {
+                db.collection("client_reviews").add({ author: author, stars: stars, comment: comment, timestamp: Date.now() }).then(() => {
                     closeModal("addReviewModal");
-                    alert("Thank you! Aapka review live add ho gaya.");
-                }).catch(err => alert("Error: " + err.message));
+                    alert("Review added live!");
+                });
             }
         }
 
@@ -1017,31 +1333,19 @@
                 const container = document.getElementById("reviewsContainer");
                 if (!container) return;
                 container.innerHTML = "";
-                const list = [];
                 snapshot.forEach(doc => {
-                    const d = doc.data();
-                    d.id = doc.id;
-                    list.push(d);
-                });
-                list.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
-
-                if (list.length === 0) {
-                    container.innerHTML = `<p style="font-size:12px; color:var(--text-gray); grid-column:1/-1;">No reviews yet. Be the first to rate DHT STUDIO!</p>`;
-                    return;
-                }
-
-                list.forEach(r => {
+                    const r = doc.data();
                     const starsStr = "★".repeat(r.stars) + "☆".repeat(5 - r.stars);
                     const div = document.createElement("div");
                     div.className = "review-card";
                     div.innerHTML = `
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                             <b style="color:#fff; font-size:14px;">${r.author}</b>
-                            <span class="star-gold">${starsStr}</span>
+                            <span style="color:#f59e0b;">${starsStr}</span>
                         </div>
-                        <p style="font-size:12px; color:#cbd5e1; line-height:1.5;">"${r.comment}"</p>
+                        <p style="font-size:12px; color:#cbd5e1;">"${r.comment}"</p>
                         <div class="editor-only" style="margin-top:10px; text-align:right;">
-                            <button type="button" class="btn btn-red" style="padding:2px 6px; font-size:10px;" onclick="db.collection('client_reviews').doc('${r.id}').delete()">🗑️ Delete</button>
+                            <button type="button" class="btn btn-red" style="padding:2px 6px; font-size:10px;" onclick="db.collection('client_reviews').doc('${doc.id}').delete()">🗑️ Delete</button>
                         </div>
                     `;
                     container.appendChild(div);
@@ -1049,26 +1353,17 @@
             });
         }
 
-        /* 3. FOLLOW / SUBSCRIBERS SYSTEM */
         let globalSubscribers = [];
-
         function handleNewSubscriber(e) {
             e.preventDefault();
             const name = document.getElementById("subNameInput").value.trim();
             const contact = document.getElementById("subContactInput").value.trim();
-
-            if (!name || !contact) return;
-
             if (db) {
-                db.collection("subscribers").add({
-                    name: name,
-                    contact: contact,
-                    timestamp: Date.now()
-                }).then(() => {
+                db.collection("subscribers").add({ name: name, contact: contact, timestamp: Date.now() }).then(() => {
                     document.getElementById("subNameInput").value = "";
                     document.getElementById("subContactInput").value = "";
-                    alert("🎉 Subscribed! Jab bhi naya album ya video aayega aapko notification mil jayega.");
-                }).catch(err => alert("Error: " + err.message));
+                    alert("🎉 Subscribed successfully!");
+                });
             }
         }
 
@@ -1088,36 +1383,19 @@
         function openSubscribersModal() {
             const listWrap = document.getElementById("subscribersListContainer");
             listWrap.innerHTML = "";
-
-            if (globalSubscribers.length === 0) {
-                listWrap.innerHTML = `<p style="font-size:12px; color:var(--text-gray); padding:20px; text-align:center;">Abhi tak koi subscriber nahi hai.</p>`;
-            } else {
-                globalSubscribers.forEach(s => {
-                    const isPhone = /^[0-9+\s]+$/.test(s.contact);
-                    const cleanPhone = s.contact.replace(/\D/g, "");
-                    const waBtn = isPhone ? `
-                        <a href="https://wa.me/${cleanPhone.length===10?'91'+cleanPhone:cleanPhone}?text=Hello%20${encodeURIComponent(s.name)},%20DHT%20STUDIO%20just%20uploaded%20a%20new%203D%20Album%20on%20https://dhtstudio.in" target="_blank" class="btn btn-green" style="padding:3px 8px; font-size:11px;">💬 WhatsApp Alert</a>
-                    ` : '';
-
-                    const row = document.createElement("div");
-                    row.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border);";
-                    row.innerHTML = `
-                        <div>
-                            <b style="color:#fff; font-size:13.5px;">${s.name}</b>
-                            <p style="font-size:11.5px; color:var(--text-gray);">${s.contact}</p>
-                        </div>
-                        <div style="display:flex; gap:8px;">
-                            ${waBtn}
-                            <button type="button" class="btn btn-red" style="padding:3px 6px; font-size:11px;" onclick="db.collection('subscribers').doc('${s.id}').delete()">✕</button>
-                        </div>
-                    `;
-                    listWrap.appendChild(row);
-                });
-            }
+            globalSubscribers.forEach(s => {
+                const row = document.createElement("div");
+                row.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border);";
+                row.innerHTML = `
+                    <div><b style="color:#fff;">${s.name}</b><p style="font-size:11.5px; color:var(--text-gray);">${s.contact}</p></div>
+                    <button type="button" class="btn btn-red" style="padding:2px 6px; font-size:11px;" onclick="db.collection('subscribers').doc('${s.id}').delete()">✕</button>
+                `;
+                listWrap.appendChild(row);
+            });
             openModal("subscribersModal");
         }
 
-        /* 4. SOCIAL MEDIA DIRECT EDIT & SYNC */
+        /* 5. SOCIAL & HERO EDIT */
         function openSocialModal() {
             document.getElementById("editInsta").value = document.getElementById("socialInsta").href;
             document.getElementById("editFb").value = document.getElementById("socialFb").href;
@@ -1128,40 +1406,17 @@
 
         function saveSocialLinks() {
             const links = {
-                insta: document.getElementById("editInsta").value.trim() || "https://instagram.com",
-                fb: document.getElementById("editFb").value.trim() || "https://facebook.com",
-                yt: document.getElementById("editYt").value.trim() || "https://youtube.com",
-                wa: document.getElementById("editWa").value.trim() || "https://wa.me/918372929859"
+                insta: document.getElementById("editInsta").value.trim(),
+                fb: document.getElementById("editFb").value.trim(),
+                yt: document.getElementById("editYt").value.trim(),
+                wa: document.getElementById("editWa").value.trim()
             };
-
             if (db) {
                 db.collection("settings").doc("social_links").set(links).then(() => {
                     closeModal("socialModal");
-                    alert("Social links update ho gaye!");
+                    alert("Social links updated!");
                 });
             }
-        }
-
-        function syncSiteSettings() {
-            if (!db) return;
-            db.collection("settings").doc("social_links").onSnapshot(doc => {
-                if (doc.exists) {
-                    const d = doc.data();
-                    if (d.insta) document.getElementById("socialInsta").href = d.insta;
-                    if (d.fb) document.getElementById("socialFb").href = d.fb;
-                    if (d.yt) document.getElementById("socialYt").href = d.yt;
-                    if (d.wa) document.getElementById("socialWa").href = d.wa;
-                }
-            });
-
-            db.collection("settings").doc("hero_taglines").onSnapshot(doc => {
-                if (doc.exists) {
-                    const d = doc.data();
-                    if (d.en) document.getElementById("heroTagEn").textContent = d.en;
-                    if (d.hi) document.getElementById("heroTagHi").textContent = d.hi;
-                    if (d.bn) document.getElementById("heroTagBn").textContent = d.bn;
-                }
-            });
         }
 
         function openEditHeroModal() {
@@ -1180,129 +1435,35 @@
             if (db) {
                 db.collection("settings").doc("hero_taglines").set(data).then(() => {
                     closeModal("heroEditModal");
-                    alert("Taglines update ho gayi!");
+                    alert("Taglines updated!");
                 });
             }
         }
 
-        /* 5. CUSTOMER & BILLING MINIMAL ENGINE */
-        function openCustomerWorkspace() { openModal("customerWorkspaceModal"); }
-        function openAddPhotographerModal() {
-            document.getElementById("custStudioName").value = "";
-            document.getElementById("custPhone").value = "";
-            openModal("photographerModal");
-        }
-        function savePhotographerData() {
-            const sName = document.getElementById("custStudioName").value.trim();
-            const phone = document.getElementById("custPhone").value.trim();
-            if (!sName || !phone) { alert("Studio name aur mobile zaroori hai!"); return; }
-            if (db) {
-                db.collection("photographers").add({ studio: sName, phone: phone, timestamp: Date.now() }).then(() => {
-                    closeModal("photographerModal");
-                    alert("Customer add ho gaya!");
-                });
-            }
-        }
-        function syncCustomerPhotographers() {
+        function syncSiteSettings() {
             if (!db) return;
-            db.collection("photographers").onSnapshot(snapshot => {
-                const grid = document.getElementById("workspaceCustomerGrid");
-                if (!grid) return;
-                grid.innerHTML = "";
-                snapshot.forEach(doc => {
-                    const c = doc.data();
-                    const card = document.createElement("div");
-                    card.className = "photographer-card";
-                    card.innerHTML = `
-                        <h4 class="studio-client-name">${c.studio}</h4>
-                        <div class="client-meta"><span>📞 +91 ${c.phone}</span></div>
-                        <div style="display:flex; gap:6px; margin-top:8px;">
-                            <a href="https://wa.me/91${c.phone.replace(/\D/g,'')}" target="_blank" class="btn btn-green" style="font-size:11px;">💬 WhatsApp</a>
-                            <button type="button" class="btn btn-red editor-only" style="font-size:11px;" onclick="db.collection('photographers').doc('${doc.id}').delete()">🗑️ Delete</button>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-            });
-        }
-
-        const inr = n => "₹" + Math.round(+n || 0).toLocaleString("en-IN");
-        let billingJobs = [];
-        function renderBillingLedger() {
-            const container = document.getElementById("billingJobsContainer");
-            const stats = document.getElementById("billingStatsGrid");
-            if (!container) return;
-            let totalBilled = 0, totalPaid = 0;
-            container.innerHTML = "";
-            billingJobs.forEach(j => {
-                totalBilled += (+j.total || 0);
-                totalPaid += (+j.adv || 0);
-                const due = (+j.total || 0) - (+j.adv || 0);
-                const div = document.createElement("div");
-                div.className = "job-card";
-                div.innerHTML = `
-                    <div style="display:flex; justify-content:space-between;">
-                        <b style="color:#fff;">${j.client}</b>
-                        <b style="color:${due > 0 ? 'var(--accent-red)' : 'var(--accent-green)'}">${due > 0 ? inr(due) + ' Due' : 'Paid'}</b>
-                    </div>
-                    <div style="font-size:12px; color:var(--text-gray);">${j.event || 'Project'} • Total: ${inr(j.total)} • Adv: ${inr(j.adv)}</div>
-                `;
-                container.appendChild(div);
-            });
-            if (stats) {
-                stats.innerHTML = `
-                    <div class="b-card"><small>Total Billed</small><b>${inr(totalBilled)}</b></div>
-                    <div class="b-card rec"><small>Received</small><b style="color:var(--accent-green);">${inr(totalPaid)}</b></div>
-                    <div class="b-card due"><small>Due</small><b style="color:var(--accent-red);">${inr(totalBilled - totalPaid)}</b></div>
-                `;
-            }
-        }
-        function openNewJobForm() {
-            document.getElementById("jobClientName").value = "";
-            document.getElementById("jobClientPhone").value = "";
-            document.getElementById("jobEventName").value = "";
-            document.getElementById("jobTotalAmt").value = "";
-            document.getElementById("jobAdvAmt").value = "";
-            openModal("jobEditModal");
-        }
-        function saveBillingJobRecord() {
-            const name = document.getElementById("jobClientName").value.trim();
-            const tot = +document.getElementById("jobTotalAmt").value;
-            if (!name || !tot) { alert("Client Name aur Total Amount daalna zaroori hai!"); return; }
-            if (db) {
-                db.collection("jobs").add({
-                    client: name,
-                    phone: document.getElementById("jobClientPhone").value.trim(),
-                    event: document.getElementById("jobEventName").value.trim(),
-                    total: tot,
-                    adv: +document.getElementById("jobAdvAmt").value || 0,
-                    timestamp: Date.now()
-                }).then(() => {
-                    closeModal("jobEditModal");
-                    alert("Job save ho gaya!");
-                });
-            }
-        }
-        function syncBillingFirestore() {
-            if (!db) return;
-            db.collection("jobs").onSnapshot(snapshot => {
-                billingJobs = [];
-                snapshot.forEach(doc => {
+            db.collection("settings").doc("social_links").onSnapshot(doc => {
+                if (doc.exists) {
                     const d = doc.data();
-                    d.id = doc.id;
-                    billingJobs.push(d);
-                });
-                renderBillingLedger();
+                    if (d.insta) document.getElementById("socialInsta").href = d.insta;
+                    if (d.fb) document.getElementById("socialFb").href = d.fb;
+                    if (d.yt) document.getElementById("socialYt").href = d.yt;
+                    if (d.wa) document.getElementById("socialWa").href = d.wa;
+                }
+            });
+            db.collection("settings").doc("hero_taglines").onSnapshot(doc => {
+                if (doc.exists) {
+                    const d = doc.data();
+                    if (d.en) document.getElementById("heroTagEn").textContent = d.en;
+                    if (d.hi) document.getElementById("heroTagHi").textContent = d.hi;
+                    if (d.bn) document.getElementById("heroTagBn").textContent = d.bn;
+                }
             });
         }
 
         window.addEventListener("DOMContentLoaded", () => {
             const pinInp = document.getElementById("adminPinInput");
-            if (pinInp) {
-                pinInp.addEventListener("keypress", (e) => {
-                    if (e.key === "Enter") executePinUnlock();
-                });
-            }
+            if (pinInp) pinInp.addEventListener("keypress", e => { if (e.key === "Enter") executePinUnlock(); });
             syncDirectWorkStream();
             syncClientReviews();
             syncSubscribers();
