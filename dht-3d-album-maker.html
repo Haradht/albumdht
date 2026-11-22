@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>वेडिंग एल्बम | DHT STUDIO</title>
+<style>
+:root{--bg:#f4efe8;--fg:#2b2320;--card:#fff;--line:#e2d8cc;--acc:#9c6b2f;--accfg:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1816;--fg:#f1e8de;--card:#2a2421;--line:#443b35;--acc:#d9a85c;--accfg:#1c1816}}
+:root[data-theme="dark"]{--bg:#1c1816;--fg:#f1e8de;--card:#2a2421;--line:#443b35;--acc:#d9a85c;--accfg:#1c1816}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI","Noto Sans Devanagari",sans-serif}
+h1{font:600 22px Georgia,"Noto Serif Devanagari",serif;text-align:center;margin:18px 12px 4px}
+.stage{perspective:2400px;display:flex;justify-content:center;align-items:center;height:calc(var(--h) + 40px);overflow:hidden;cursor:pointer}
+.book{position:relative;width:calc(var(--w)*2);height:var(--h);transform-style:preserve-3d;transition:transform .9s ease;filter:drop-shadow(0 14px 22px rgba(0,0,0,.35))}
+.leaf{position:absolute;left:50%;top:0;width:var(--w);height:var(--h);transform-origin:left center;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.45,.05,.25,1)}
+.leaf.f{transform:rotateY(-180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:#fbf7ef;padding:10px}
+.face.b{transform:rotateY(180deg)}
+.face.r{border-radius:0 6px 6px 0}.face.b{border-radius:6px 0 0 6px}
+.face.r::after,.face.b::after{content:"";position:absolute;inset:0;pointer-events:none}
+.face.r::after{background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,0) 9%,rgba(0,0,0,0) 92%,rgba(0,0,0,.08))}
+.face.b::after{background:linear-gradient(270deg,rgba(0,0,0,.28),rgba(0,0,0,0) 9%,rgba(0,0,0,0) 92%,rgba(0,0,0,.08))}
+.face img{width:100%;height:100%;object-fit:cover;display:block;border-radius:2px}
+.face.cv{padding:0}
+.ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;color:#9a8a76;border:2px dashed #d8cbb7;font-size:13px;padding:10px}
+.cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12%;font-family:Georgia,"Noto Serif Devanagari",serif}
+.cover .fr{position:absolute;inset:6%;border:2px solid currentColor;opacity:.55;border-radius:3px;pointer-events:none}
+.cover .t{font-size:calc(var(--w)*.075);line-height:1.2;margin:.4em 0;font-weight:700;text-shadow:0 1px 6px rgba(0,0,0,.25)}
+.cover .s{font-size:calc(var(--w)*.025);letter-spacing:.25em;text-transform:uppercase}
+.cover .d{font-size:calc(var(--w)*.028);margin-top:1.4em;letter-spacing:.1em}
+.cover .tx{background:rgba(0,0,0,.25);padding:.4em .8em;border-radius:4px}
+.ctl{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin:6px 12px 14px}
+button,.btn{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--fg);padding:9px 16px;border-radius:999px;cursor:pointer}
+button.pri,.btn.pri{background:var(--acc);color:var(--accfg);border-color:var(--acc);font-weight:600}
+button:disabled{opacity:.4;cursor:default}
+.ind{min-width:56px;text-align:center;font-variant-numeric:tabular-nums}
+#panel{max-width:900px;margin:0 auto;padding:0 14px 40px;display:grid;gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.card h2{font-size:15px;margin:0 0 10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+.sw{width:34px;height:34px;border-radius:50%;border:2px solid var(--line);padding:0;cursor:pointer}
+.sw.on{outline:3px solid var(--acc);outline-offset:2px}
+input[type=text]{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);flex:1;min-width:140px}
+input[type=file]{display:none}
+#thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin-top:10px}
+.th{position:relative;aspect-ratio:3/1;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.th img{width:100%;height:100%;object-fit:cover}
+.th b{position:absolute;left:3px;top:3px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:0 6px;border-radius:8px}
+.th button{position:absolute;right:3px;top:3px;padding:0;width:22px;height:22px;border-radius:50%;line-height:20px;background:rgba(0,0,0,.65);color:#fff;border:0}
+.hint{font-size:12.5px;opacity:.7}
+.face.pf{padding:0;background:#222}
+.sp{position:relative;width:100%;height:100%;background-repeat:no-repeat;background-size:200% 100%}
+.wm{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;font-size:calc(var(--w)*.06);font-weight:700;font-family:Georgia,serif;letter-spacing:.15em;text-transform:uppercase;white-space:nowrap;color:rgba(255,255,255,.3);text-shadow:0 1px 4px rgba(0,0,0,.35);transform:rotate(-22deg)}
+.stage,.stage *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#credit{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin:0 12px 14px;font-weight:600}
+#credit a{color:var(--acc);text-decoration:none}
+#credit:empty{display:none}
+#dht{text-align:center;margin:0 12px 16px;font-family:Georgia,serif;font-size:11px;font-weight:600;letter-spacing:.4em;color:var(--acc);opacity:.85}
+#dht::before,#dht::after{content:'';display:inline-block;width:26px;height:1px;background:currentColor;vertical-align:middle;margin:0 10px;opacity:.6}
+.dhtb{position:absolute;left:0;right:0;bottom:9%;text-align:center;font-family:Georgia,serif;font-weight:600;font-size:calc(var(--w)*.022);letter-spacing:.35em;opacity:.8;text-shadow:0 1px 3px rgba(0,0,0,.35)}
+body.viewer #panel,body.viewer .edit{display:none}
+</style>
+</head>
+<body>
+<h1 id="ttl">वेडिंग एल्बम</h1>
+<div class="stage" id="stage"><div class="book" id="book"></div></div>
+<div class="ctl">
+  <button id="prev">◀ Previous</button>
+  <span class="ind" id="ind">0 / 0</span>
+  <button id="auto" class="pri">▶ Auto Flip</button>
+  <button id="next">Next ▶</button>
+  <button id="mus" style="display:none">🎵 Song चलाएँ</button>
+</div>
+
+<div id="credit"></div>
+<div id="dht">DHT</div>
+<audio id="aud" loop preload="auto"></audio>
+<div id="panel">
+  <div class="card"><h2>1. Front Cover</h2>
+    <div class="row" id="swF"></div>
+    <div class="row"><label class="btn" for="fiF">अपनी कवर फोटो चुनें</label><input type="file" id="fiF" accept="image/*"><button id="rmF">फोटो हटाएँ</button></div>
+    <div class="row"><input type="text" id="inT" placeholder="नाम (जैसे Rahul &amp; Priya)"><input type="text" id="inS" placeholder="ऊपर की लाइन"><input type="text" id="inD" placeholder="तारीख"></div>
+  </div>
+  <div class="card"><h2>2. Back Cover</h2>
+    <div class="row" id="swB"></div>
+    <div class="row"><label class="btn" for="fiB">अपनी बैक कवर फोटो चुनें</label><input type="file" id="fiB" accept="image/*"><button id="rmB">फोटो हटाएँ</button></div>
+    <div class="row"><input type="text" id="inB" placeholder="बैक कवर का टेक्स्ट"></div>
+  </div>
+  <div class="card"><h2>3. एल्बम स्प्रेड फोटो (36×12 inch, 10800×3600 px), कोई सीमा नहीं</h2>
+    <div class="row"><label class="btn pri" for="fiP">+ फोटो अपलोड करें</label><input type="file" id="fiP" accept="image/*" multiple><button id="clr">सब हटाएँ</button><span class="hint" id="cnt">0 फोटो</span></div>
+    <div class="row"><span class="hint">फोटो साइज़ (नई फोटो पर लागू):</span><select id="szMode" style="font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)"><option value="s">सबसे छोटी (1400px)</option><option value="m" selected>छोटी + साफ़ (1800px) ✔</option><option value="h">हाई क्वालिटी (2400px)</option></select></div>
+    <div class="hint" id="szinfo"></div>
+    <div class="hint">हर फोटो पूरा खुला स्प्रेड (बायाँ + दायाँ पेज) होनी चाहिए। एल्बम उसे बीच से अपने-आप बाँटकर दोनों पेज पर लगाएगा, कोई ज़ूम या क्रॉप नहीं होगा।</div>
+    <div id="thumbs"></div>
+  </div>
+  <div class="card"><h2>4. फोटोग्राफर की जानकारी</h2><div class="row"><input type="text" id="inN" placeholder="फोटोग्राफर / स्टूडियो का नाम"><input type="text" id="inM" placeholder="मोबाइल नंबर" inputmode="tel"></div><div class="row"><input type="text" id="inW" placeholder="WhatsApp नंबर" inputmode="tel"><input type="text" id="inI" placeholder="Instagram ID या लिंक"><input type="text" id="inF" placeholder="Facebook पेज/लिंक"><input type="text" id="inY" placeholder="YouTube चैनल/लिंक"></div>
+    <div class="row"><label><input type="checkbox" id="wmOn" checked> फोटो पर वॉटरमार्क लगाएँ</label><input type="text" id="inK" placeholder="वॉटरमार्क टेक्स्ट (खाली हो तो फोटोग्राफर का नाम)"></div><div class="hint">सब कुछ वैकल्पिक है। जो खाना भरेंगे सिर्फ वही दिखेगा, खाली छोड़ने पर वह बटन अपने-आप गायब रहेगा। नाम और नंबर बैक कवर पर और एल्बम के नीचे दिखेंगे।</div></div>
+  <div class="card"><h2>5. गाना (Song)</h2><div class="row"><label class="btn" for="fiS">🎵 गाना चुनें (MP3)</label><input type="file" id="fiS" accept="audio/*"><button id="rmS">गाना हटाएँ</button><span class="hint" id="songName"></span></div><div class="hint">सेव की गई HTML फाइल में गाना भी जुड़ा रहेगा। ब्राउज़र के नियम की वजह से गाना पहली बार Next / Auto Flip दबाने पर शुरू होगा।</div></div>
+  <div class="card"><h2>6. सेव करें</h2>
+    <div class="row"><button class="pri" id="save">⬇ सारी फोटो के साथ एक HTML फाइल सेव करें</button><button class="pri" id="saveZ">📁 फोल्डर के रूप में सेव करें (ZIP)</button></div>
+    <div class="hint">सेव की गई फाइल में सभी फोटो अंदर ही जुड़ी होंगी, इंटरनेट के बिना भी खुलेगी और सिर्फ एल्बम दिखाएगी।</div>
+    <div class="hint"><b>ZIP वाला विकल्प:</b> इसमें index.html और photos फोल्डर अलग-अलग बनते हैं। लिंक/QR के लिए यही बेहतर है, क्योंकि हर फाइल छोटी रहती है और फोटो base64 में नहीं बदलती, इसलिए कुल साइज़ भी कम रहता है। ZIP को Netlify Drop / Vercel Drop पर सीधे डाल सकते हैं (या Extract करके पूरा फोल्डर)। सिर्फ index.html अकेली भेजने पर फोटो नहीं दिखेंगी।</div></div>
+  <div class="card"><h2>7. प्रिंट के लिए QR कोड</h2>
+    <div class="hint">सेव की हुई HTML फाइल को ऑनलाइन साइट (Netlify / Vercel / GitHub Pages) पर डालकर जो लिंक मिले, उसे यहाँ चिपकाएँ। Drive का फोल्डर लिंक भी चलेगा।</div>
+    <div class="row"><input type="text" id="qrU" placeholder="https://..."><input type="text" id="qrC" placeholder="QR के नीचे का टेक्स्ट" value="Scan to view album"></div>
+    <div class="row"><button class="pri" id="qrG">QR बनाएँ</button><button id="qrD" style="display:none">⬇ QR फोटो (PNG) सेव करें</button></div>
+    <div id="qrBox" style="display:none;background:#fff;padding:8px;border-radius:10px;width:fit-content"><canvas id="qrV" style="width:220px;height:auto;display:block"></canvas></div>
+    <div class="hint">PNG बड़ी (लगभग 1080px) और सफेद बैकग्राउंड वाली बनती है। प्रिंट में कम से कम 3×3 cm रखें।</div>
+  </div>
+</div>
+
+<script type="application/json" id="state">{}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const TH=[
+ {n:"Royal Maroon",bg:"linear-gradient(135deg,#7a1424,#3a0810)",fg:"#f2d28b"},
+ {n:"Classic Gold",bg:"linear-gradient(135deg,#e0bb6a,#a8782a)",fg:"#3b2508"},
+ {n:"Blush",bg:"linear-gradient(135deg,#f8e0e0,#e8b4bc)",fg:"#6b2b3a"},
+ {n:"Midnight",bg:"linear-gradient(135deg,#1a2a52,#0b1224)",fg:"#e7c872"},
+ {n:"Ivory",bg:"linear-gradient(135deg,#fbf7ee,#e6dac3)",fg:"#6b4a1e"}
+];
+const MODES={s:{px:1400,q:.58},m:{px:1800,q:.68},h:{px:2400,q:.8}};
+let S=Object.assign({title:"Groom & Bride",sub:"The Wedding Album",date:"",frontTheme:0,backTheme:0,frontImg:"",backImg:"",backText:"With Love",photos:[],pgName:"",pgPhone:"",wa:"",ig:"",fb:"",yt:"",wm:"",wmOn:true,song:"",songName:"",viewer:false},JSON.parse($("#state").textContent||"{}"));
+let cur=0,L=1,timer=null,leaves=[];
+if(S.viewer)document.body.classList.add("viewer");
+
+function fit(){const w=Math.max(120,Math.min(innerWidth*.46,innerHeight*.9,660));document.documentElement.style.setProperty("--w",w+"px");document.documentElement.style.setProperty("--h",(w/1.5)+"px")}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function coverEl(side){
+  const t=TH[S[side+"Theme"]]||TH[0],img=S[side+"Img"];
+  const d=document.createElement("div");d.className="cover";
+  d.style.background=img?'center/cover url("'+img+'")':t.bg;d.style.color=img?"#fff":t.fg;
+  let h='<div class="fr"></div>';
+  if(side==="front"){
+    h+=`<div class="${img?"tx":""}"><div class="s">${esc(S.sub)}</div><div class="t">${esc(S.title)}</div><div class="d">${esc(S.date)}</div></div>`;
+  }else{
+    h+=`<div class="${img?"tx":""}"><div class="t" style="font-size:calc(var(--w)*.05)">${esc(S.backText)}</div><div class="d">${esc(S.pgName?"📷 "+S.pgName:"")}</div><div class="d" style="margin-top:.3em">${esc(S.pgPhone?"📞 "+S.pgPhone:"")}</div></div><div class="dhtb">DHT STUDIO</div>`;
+  }
+  d.innerHTML=h;return d;
+}
+function photoEl(src,i,h){
+  if(src&&h!==undefined){const s=document.createElement("div");s.className="sp";s.style.backgroundImage='url("'+src+'")';s.style.backgroundPosition=h?"100% 0":"0 0";
+    const wt=(S.wm||S.pgName||"").trim();if(S.wmOn!==false&&wt){const w=document.createElement("div");w.className="wm";w.textContent=wt;s.appendChild(w)}
+    return s}
+  const d=document.createElement("div");
+  if(src){const im=document.createElement("img");im.src=src;im.alt="Photo "+(i+1);d.style.cssText="width:100%;height:100%";d.appendChild(im)}
+  else if(src===""){d.className="ph";d.textContent="खाली पेज"}
+  else{d.className="ph";d.textContent="यहाँ फोटो आएगी"}
+  return d;
+}
+function faceList(){
+  const f=[{c:1,side:"front"}];
+  const p=S.photos.length?S.photos:[null];
+  p.forEach((s,i)=>{f.push({p:s,i,h:0});f.push({p:s,i,h:1})});
+  if((f.length+1)%2)f.push({p:"",i:-1});
+  f.push({c:1,side:"back"});
+  return f;
+}
+function sizeInfo(){
+  const el=$("#szinfo");if(!el)return;
+  let b=0;const add=s=>{if(s&&String(s).slice(0,5)==="data:")b+=s.length};
+  S.photos.forEach(add);add(S.frontImg);add(S.backImg);add(S.song);
+  const mb=v=>(v/1048576).toFixed(1);
+  el.textContent="अंदाज़न साइज़: सिंगल HTML ≈ "+mb(b)+" MB | ZIP फोल्डर ≈ "+mb(b*.75)+" MB";
+}
+function buildBook(){
+  const book=$("#book");book.innerHTML="";
+  const f=faceList();L=f.length/2;leaves=[];
+  for(let k=0;k<L;k++){
+    const lf=document.createElement("div");lf.className="leaf";
+    [f[2*k],f[2*k+1]].forEach((x,j)=>{
+      const fc=document.createElement("div");fc.className="face "+(j?"b":"r")+(x.c?" cv":"")+(x.p&&x.h!==undefined?" pf":"");
+      fc.appendChild(x.c?coverEl(x.side):photoEl(x.p,x.i,x.h));lf.appendChild(fc);
+    });
+    book.appendChild(lf);leaves.push(lf);
+  }
+  if(cur>L)cur=0;credit();sizeInfo();document.title=(S.title||"वेडिंग एल्बम")+" | DHT STUDIO";apply(true);
+}
+function apply(now){
+  const w=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--w"))||200;
+  $("#book").style.transform="translateX("+(cur===0?-w/2:cur===L?w/2:0)+"px)";
+  leaves.forEach((lf,k)=>{
+    lf.classList.toggle("f",k<cur);
+    const z=k<cur?k+1:L-k;
+    if(now)lf.style.zIndex=z;else setTimeout(()=>lf.style.zIndex=z,480);
+  });
+  $("#ind").textContent=cur+" / "+L;
+  $("#prev").disabled=cur===0;$("#next").disabled=cur===L;
+}
+function next(){if(cur<L){cur++;apply()}}
+function prev(){if(cur>0){cur--;apply()}}
+function toggleAuto(){
+  const b=$("#auto");
+  if(timer){clearInterval(timer);timer=null;b.textContent="▶ Auto Flip";return}
+  b.textContent="⏸ Stop";
+  if(cur>=L){cur=0;apply()}
+  timer=setInterval(()=>{if(cur>=L){cur=0;apply()}else next()},2600);
+}
+$("#next").onclick=e=>{e.stopPropagation();tryPlay();next()};
+$("#prev").onclick=e=>{e.stopPropagation();prev()};
+$("#auto").onclick=()=>{tryPlay();toggleAuto()};
+$("#stage").onclick=e=>{tryPlay();const r=$("#book").getBoundingClientRect();const x=e.clientX-(r.left+r.width/2);if(x>0)next();else prev()};
+addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")next();if(e.key==="ArrowLeft")prev()});
+addEventListener("resize",()=>{fit();apply(true)});
+
+function swatches(id,side){
+  const box=$(id);box.innerHTML="";
+  TH.forEach((t,i)=>{
+    const b=document.createElement("button");b.className="sw"+(S[side+"Theme"]===i?" on":"");b.title=t.n;b.style.background=t.bg;
+    b.onclick=()=>{S[side+"Theme"]=i;S[side+"Img"]="";swatches(id,side);buildBook()};
+    box.appendChild(b);
+  });
+}
+function readImg(file,max){
+  return new Promise(res=>{
+    const u=URL.createObjectURL(file),im=new Image(),M=MODES[$("#szMode").value]||MODES.m;
+    im.onload=()=>{
+      const k=Math.min(1,Math.min(max,M.px)/Math.max(im.width,im.height)),c=document.createElement("canvas");
+      c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+      const x=c.getContext("2d");x.imageSmoothingQuality="high";x.drawImage(im,0,0,c.width,c.height);
+      URL.revokeObjectURL(u);
+      let d=c.toDataURL("image/webp",M.q);
+      if(d.indexOf("data:image/webp")!==0)d=c.toDataURL("image/jpeg",Math.min(.8,M.q+.1));
+      res(d);
+    };
+    im.onerror=()=>{URL.revokeObjectURL(u);res(null)};
+    im.src=u;
+  });
+}
+function thumbs(){
+  const t=$("#thumbs");t.innerHTML="";
+  S.photos.forEach((s,i)=>{
+    const d=document.createElement("div");d.className="th";
+    d.innerHTML='<img alt=""><b>'+(i+1)+'</b><button title="हटाएँ">×</button>';
+    d.querySelector("img").src=s;
+    d.querySelector("button").onclick=()=>{S.photos.splice(i,1);cur=0;thumbs();buildBook()};
+    t.appendChild(d);
+  });
+  $("#cnt").textContent=S.photos.length+" फोटो (स्प्रेड)";
+}
+$("#fiP").onchange=async e=>{
+  const files=[...e.target.files].sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));e.target.value="";
+  const w=S.photos.length+files.length>40?1700:2400;
+  $("#cnt").textContent="फोटो लोड हो रही हैं...";
+  for(const f of files){const d=await readImg(f,w);if(d)S.photos.push(d)}
+  cur=0;thumbs();buildBook();
+};
+$("#fiF").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(f){const d=await readImg(f,1100);if(d){S.frontImg=d;buildBook()}}};
+$("#fiB").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(f){const d=await readImg(f,1100);if(d){S.backImg=d;buildBook()}}};
+$("#rmF").onclick=()=>{S.frontImg="";buildBook()};
+$("#rmB").onclick=()=>{S.backImg="";buildBook()};
+$("#clr").onclick=()=>{if(S.photos.length&&confirm("सभी फोटो हटानी हैं?")){S.photos=[];cur=0;thumbs();buildBook()}};
+[["#inT","title"],["#inS","sub"],["#inD","date"],["#inB","backText"],["#inN","pgName"],["#inM","pgPhone"],["#inW","wa"],["#inI","ig"],["#inF","fb"],["#inY","yt"],["#inK","wm"]].forEach(([id,k])=>{
+  const el=$(id);el.value=S[k]||"";el.oninput=()=>{S[k]=el.value;if(k==="title")$("#ttl").textContent=el.value||"वेडिंग एल्बम";buildBook()};
+});
+
+$("#save").onclick=async()=>{
+  const c=document.documentElement.cloneNode(true);
+  c.querySelector("#book").innerHTML="";c.querySelector("#thumbs").innerHTML="";
+  c.querySelector("#auto").textContent="▶ Auto Flip";c.querySelector("#aud").removeAttribute("src");c.querySelector("#credit").innerHTML="";
+  c.querySelectorAll("script[src]").forEach(s=>s.remove());
+  c.querySelector("#state").textContent=JSON.stringify(Object.assign({},S,{viewer:true})).replace(/</g,"\\u003c");
+  c.removeAttribute("style");
+  const html="<!DOCTYPE html>\n"+c.outerHTML;
+  const blob=new Blob([html],{type:"text/html"}),name="Wedding-Album.html";
+  try{
+    const dl=window.claude&&await claude.use("downloads");
+    if(dl){await dl.save({filename:name,data:blob});return}
+  }catch(err){if(err&&err.code==="declined")return}
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();
+};
+
+function credit(){
+  const n=(S.pgName||"").trim(),p=(S.pgPhone||"").trim(),c=$("#credit");c.innerHTML="";
+  if(n){const s=document.createElement("span");s.textContent="📷 "+n;c.appendChild(s)}
+  if(p){const a=document.createElement("a");a.textContent="📞 "+p;a.href="tel:"+p.replace(/[^\d+]/g,"");c.appendChild(a)}
+  socials(c);
+}
+function link(v,k){v=(v||"").trim();if(!v)return"";
+  if(k==="wa"){const d=v.replace(/\D/g,"");return d?"https://wa.me/"+(d.length===10?"91"+d:d):""}
+  if(/^https?:\/\//i.test(v))return v;
+  if(/\//.test(v)||/(instagram|facebook|fb|youtube|youtu)\./i.test(v))return"https://"+v;
+  const h=v.replace(/^@/,"");
+  return {ig:"https://instagram.com/"+h,fb:"https://facebook.com/"+h,yt:"https://youtube.com/@"+h}[k]}
+function socials(c){
+  [["wa","💬 WhatsApp"],["ig","📸 Instagram"],["fb","👍 Facebook"],["yt","▶️ YouTube"]].forEach(([k,t])=>{
+    const u=link(S[k],k);if(!u)return;
+    const a=document.createElement("a");a.textContent=t;a.href=u;a.target="_blank";a.rel="noopener noreferrer";c.appendChild(a)})}
+const aud=$("#aud"),mus=$("#mus");let loaded="",tried=false;
+function musLabel(){mus.textContent=aud.paused?"🎵 Song चलाएँ":"⏸ Song बंद"}
+function songUI(){
+  if(S.song){if(loaded!==S.song){aud.src=S.song;loaded=S.song}mus.style.display="";$("#songName").textContent=S.songName||"गाना जुड़ा है"}
+  else{aud.removeAttribute("src");loaded="";mus.style.display="none";$("#songName").textContent="कोई गाना नहीं"}
+  musLabel();
+}
+function tryPlay(){if(!tried&&S.song){tried=true;aud.play().catch(()=>{tried=false})}}
+aud.onplay=aud.onpause=musLabel;
+mus.onclick=e=>{e.stopPropagation();tried=true;if(aud.paused)aud.play().catch(()=>{});else aud.pause()};
+$("#fiS").onchange=e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
+  if(f.size>15*1048576&&!confirm("गाना बड़ा है ("+(f.size/1048576).toFixed(1)+" MB), HTML फाइल बहुत भारी होगी। फिर भी जोड़ें?"))return;
+  const r=new FileReader();r.onload=()=>{S.song=r.result;S.songName=f.name;songUI();sizeInfo()};r.readAsDataURL(f)};
+$("#rmS").onclick=()=>{aud.pause();S.song="";S.songName="";tried=false;songUI();sizeInfo()};
+function makeQR(){
+  const u=$("#qrU").value.trim();
+  if(!/^https?:\/\//i.test(u)){alert("पूरा लिंक डालें, जो https:// से शुरू हो");return}
+  if(!window.QRCode){alert("QR बनाने के लिए इंटरनेट चाहिए, थोड़ी देर बाद फिर कोशिश करें");return}
+  const tmp=document.createElement("div");
+  new QRCode(tmp,{text:u,width:900,height:900,correctLevel:QRCode.CorrectLevel.M});
+  const src=tmp.querySelector("canvas");if(!src)return;
+  const cap=$("#qrC").value.trim(),m=90,sz=900,H=sz+m*2+(cap?110:0),c=$("#qrV");
+  c.width=sz+m*2;c.height=H;
+  const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,H);x.drawImage(src,m,m,sz,sz);
+  if(cap){x.fillStyle="#000";x.font="600 52px sans-serif";x.textAlign="center";x.fillText(cap,c.width/2,sz+m+75)}
+  $("#qrBox").style.display="";$("#qrD").style.display="";
+}
+$("#qrG").onclick=makeQR;
+$("#qrD").onclick=()=>{$("#qrV").toBlob(async b=>{
+  try{const dl=window.claude&&await claude.use("downloads");if(dl){await dl.save({filename:"Album-QR.png",data:b});return}}catch(err){if(err&&err.code==="declined")return}
+  const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="Album-QR.png";document.body.appendChild(a);a.click();a.remove();
+},"image/png")};
+$("#wmOn").checked=S.wmOn!==false;$("#wmOn").onchange=e=>{S.wmOn=e.target.checked;buildBook()};
+["contextmenu","dragstart"].forEach(t=>$("#stage").addEventListener(t,e=>e.preventDefault()));
+const EXT={"image/jpeg":"jpg","image/png":"png","image/webp":"webp","audio/mpeg":"mp3","audio/mp3":"mp3","audio/mp4":"m4a","audio/x-m4a":"m4a","audio/wav":"wav","audio/x-wav":"wav","audio/ogg":"ogg","audio/aac":"aac"};
+function putFile(z,d,base){
+  if(!d||d.slice(0,5)!=="data:")return d;
+  const i=d.indexOf(","),mime=d.slice(5,d.indexOf(";")),ext=EXT[mime]||(mime.indexOf("audio")===0?"mp3":"jpg"),path="photos/"+base+"."+ext;
+  z.file(path,d.slice(i+1),{base64:true});return path;
+}
+$("#saveZ").onclick=async()=>{
+  if(!S.photos.length){alert("पहले फोटो जोड़ें");return}
+  if(!window.JSZip){alert("ZIP बनाने के लिए इंटरनेट चाहिए, थोड़ी देर बाद फिर कोशिश करें");return}
+  const btn=$("#saveZ"),old=btn.textContent;btn.disabled=true;btn.textContent="ZIP बन रही है...";
+  try{
+    const z=new JSZip(),st=Object.assign({},S,{viewer:true});
+    st.photos=S.photos.map((d,i)=>putFile(z,d,"spread-"+String(i+1).padStart(3,"0")));
+    st.frontImg=putFile(z,S.frontImg,"cover-front");st.backImg=putFile(z,S.backImg,"cover-back");st.song=putFile(z,S.song,"song");
+    const c=document.documentElement.cloneNode(true);
+    c.querySelector("#book").innerHTML="";c.querySelector("#thumbs").innerHTML="";
+    c.querySelector("#auto").textContent="▶ Auto Flip";c.querySelector("#aud").removeAttribute("src");c.querySelector("#credit").innerHTML="";
+    c.querySelectorAll("script[src]").forEach(s=>s.remove());
+    c.querySelector("#state").textContent=JSON.stringify(st).replace(/</g,"\\u003c");
+    c.removeAttribute("style");
+    z.file("index.html","<!DOCTYPE html>\n"+c.outerHTML);
+    const b=await z.generateAsync({type:"blob",compression:"STORE"});
+    try{const dl=window.claude&&await claude.use("downloads");if(dl){await dl.save({filename:"Album-Folder.zip",data:b});return}}catch(err){if(err&&err.code==="declined")return}
+    const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="Album-Folder.zip";document.body.appendChild(a);a.click();a.remove();
+  }finally{btn.disabled=false;btn.textContent=old}
+};
+fit();songUI();swatches("#swF","front");swatches("#swB","back");if(!S.viewer)thumbs();buildBook();
+$("#ttl").textContent=S.title||"वेडिंग एल्बम";
+</script>
+</body>
+</html>
