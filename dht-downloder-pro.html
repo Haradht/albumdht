@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DHT Downloader</title>
+<style>
+:root{--bg:#0b0b0f;--card:#15151c;--line:#2a2a36;--gold:#d4af37;--tx:#f2f2f5;--mut:#9a9aa8;--err:#ff6b6b;--ok:#4ade80}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#1a1626,var(--bg) 60%);color:var(--tx);font-family:system-ui,Segoe UI,Roboto,sans-serif;min-height:100vh;padding:20px}
+.wrap{max-width:720px;margin:0 auto}
+h1{text-align:center;letter-spacing:6px;color:var(--gold);margin:10px 0 2px;font-size:30px}
+.sub{text-align:center;color:var(--mut);font-size:13px;margin-bottom:22px}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tab{flex:1;padding:12px 6px;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:12px;cursor:pointer;font-weight:600;font-size:14px}
+.tab.on{color:#000;background:var(--gold);border-color:var(--gold)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{padding:7px 14px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--mut);cursor:pointer;font-size:13px}
+.chip.on{border-color:var(--gold);color:var(--gold)}
+input[type=text]{width:100%;padding:14px;border-radius:12px;border:1px solid var(--line);background:#0e0e14;color:var(--tx);font-size:15px;outline:none}
+input[type=text]:focus{border-color:var(--gold)}
+.row{display:flex;gap:8px;margin-top:12px}
+button.main{flex:1;padding:14px;border:0;border-radius:12px;background:var(--gold);color:#000;font-weight:700;font-size:15px;cursor:pointer}
+button.sec{padding:14px 18px;border:1px solid var(--line);border-radius:12px;background:transparent;color:var(--tx);cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}
+#out{margin-top:16px}
+.msg{padding:12px;border-radius:10px;font-size:14px;background:#0e0e14;border:1px solid var(--line)}
+.msg.err{color:var(--err)}.msg.ok{color:var(--ok)}
+.dl{display:block;margin-top:10px;padding:12px;border-radius:10px;background:var(--gold);color:#000;font-weight:700;text-align:center;text-decoration:none}
+.dl.alt{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+.thumb img{width:100%;border-radius:12px;display:block}
+details{margin-top:18px;color:var(--mut);font-size:13px}
+summary{cursor:pointer;color:var(--gold)}
+details label{display:block;margin:10px 0 4px}
+.note{font-size:12px;color:var(--mut);margin-top:16px;line-height:1.5;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>DHT</h1>
+  <div class="sub">Instagram • YouTube • Facebook — link paste karo, download karo</div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-t="ig">01 Instagram</button>
+    <button class="tab" data-t="yt">02 YouTube</button>
+    <button class="tab" data-t="fb">03 Facebook</button>
+  </div>
+
+  <div class="card">
+    <div class="chips" id="chips"></div>
+    <input type="text" id="link" placeholder="Link yahan paste karo..." autocomplete="off">
+    <div class="row">
+      <button class="sec" id="paste">Paste</button>
+      <button class="main" id="go">Download</button>
+    </div>
+    <div id="out"></div>
+  </div>
+
+  <details>
+    <summary>⚙ Server setting (video download ke liye zaroori)</summary>
+    <label>API URL (cobalt-compatible server)</label>
+    <input type="text" id="api" placeholder="https://your-server.com/">
+    <label>API Key (agar server mein laga hai, warna khali)</label>
+    <input type="text" id="key" placeholder="optional">
+    <div class="row"><button class="sec" id="save">Save</button></div>
+  </details>
+
+  <div class="note">Sirf apna ya client ki permission wala content download karein.</div>
+</div>
+
+<script>
+var MODES={
+  ig:["Video / Reel","Story","Post","DP","Highlight"],
+  yt:["Video","Thumbnail"],
+  fb:["Video"]
+};
+var tab="ig",mode=0;
+var $=function(i){return document.getElementById(i)};
+
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k)||"";localStorage.setItem(k,v)}catch(e){return ""}}
+
+function renderChips(){
+  var c=$("chips");c.innerHTML="";
+  MODES[tab].forEach(function(m,i){
+    var b=document.createElement("button");
+    b.className="chip"+(i===mode?" on":"");b.textContent=m;
+    b.onclick=function(){mode=i;renderChips();$("out").innerHTML=""};
+    c.appendChild(b);
+  });
+}
+document.querySelectorAll(".tab").forEach(function(t){
+  t.onclick=function(){
+    document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("on")});
+    t.classList.add("on");tab=t.dataset.t;mode=0;renderChips();$("out").innerHTML="";
+  };
+});
+renderChips();
+
+$("api").value=store("dht_api");$("key").value=store("dht_key");
+$("save").onclick=function(){store("dht_api",$("api").value.trim());store("dht_key",$("key").value.trim());msg("Saved ✔","ok")};
+$("paste").onclick=function(){
+  if(navigator.clipboard&&navigator.clipboard.readText){
+    navigator.clipboard.readText().then(function(t){$("link").value=t}).catch(function(){msg("Paste allowed nahi — manually paste karo","err")});
+  }
+};
+
+function msg(t,cls){$("out").innerHTML='<div class="msg '+(cls||"")+'"></div>';$("out").firstChild.textContent=t}
+
+function ytId(u){
+  var m=u.match(/(?:v=|youtu\.be\/|shorts\/|embed\/|live\/)([A-Za-z0-9_-]{11})/);
+  return m?m[1]:null;
+}
+
+function doThumb(url){
+  var id=ytId(url);
+  if(!id){msg("YouTube link sahi nahi hai","err");return}
+  var base="https://img.youtube.com/vi/"+id+"/";
+  var sizes=[["maxresdefault","Max (1280x720)"],["sddefault","SD (640x480)"],["hqdefault","HQ (480x360)"]];
+  var h='<div class="thumb"><img id="timg" alt="thumbnail"></div>';
+  sizes.forEach(function(s){
+    h+='<a class="dl alt" target="_blank" rel="noopener" href="'+base+s[0]+'.jpg" data-n="'+s[0]+'">Open / Save '+s[1]+'</a>';
+  });
+  $("out").innerHTML=h;
+  var img=$("timg"),i=0;
+  img.onload=function(){if(img.naturalWidth<=120&&i<sizes.length-1){i++;img.src=base+sizes[i][0]+".jpg"}};
+  img.onerror=function(){if(i<sizes.length-1){i++;img.src=base+sizes[i][0]+".jpg"}};
+  img.src=base+sizes[0][0]+".jpg";
+  document.querySelectorAll("#out a.dl").forEach(function(a){
+    a.onclick=function(e){
+      e.preventDefault();
+      fetch(a.href).then(function(r){return r.blob()}).then(function(b){
+        var l=document.createElement("a");l.href=URL.createObjectURL(b);
+        l.download="DHT_thumbnail_"+id+"_"+a.dataset.n+".jpg";document.body.appendChild(l);l.click();l.remove();
+      }).catch(function(){window.open(a.href,"_blank")});
+    };
+  });
+}
+
+function doVideo(url){
+  var api=store("dht_api");
+  if(!api){msg("Pehle neeche ⚙ Server setting mein API URL daalo (video download ke liye server chahiye).","err");return}
+  if(!/\/$/.test(api))api+="/";
+  var btn=$("go");btn.disabled=true;msg("Processing...");
+  var headers={"Accept":"application/json","Content-Type":"application/json"};
+  var key=store("dht_key");if(key)headers["Authorization"]="Api-Key "+key;
+  fetch(api,{method:"POST",headers:headers,body:JSON.stringify({url:url,videoQuality:"max",filenameStyle:"pretty"})})
+  .then(function(r){return r.json()})
+  .then(function(d){
+    btn.disabled=false;
+    if(d.status==="error"){
+      msg("Error: "+((d.error&&d.error.code)||"download nahi ho paya"),"err");return;
+    }
+    if(d.status==="tunnel"||d.status==="redirect"){
+      showLinks([{u:d.url,n:d.filename||"Download"}]);return;
+    }
+    if(d.status==="picker"){
+      var arr=(d.picker||[]).map(function(p,i){return{u:p.url,n:(p.type||"file")+" "+(i+1)}});
+      if(d.audio)arr.push({u:d.audio,n:"Audio"});
+      showLinks(arr);return;
+    }
+    msg("Unknown response from server","err");
+  })
+  .catch(function(){btn.disabled=false;msg("Server se connect nahi hua. API URL check karo.","err")});
+}
+
+function showLinks(arr){
+  var o=$("out");o.innerHTML='<div class="msg ok">Ready ✔</div>';
+  arr.forEach(function(x){
+    var a=document.createElement("a");a.className="dl";a.href=x.u;a.target="_blank";a.rel="noopener";
+    a.setAttribute("download","");a.textContent="⬇ "+x.n;o.appendChild(a);
+  });
+}
+
+$("go").onclick=function(){
+  var url=$("link").value.trim();
+  if(!/^https?:\/\//i.test(url)){msg("Pehle sahi link paste karo","err");return}
+  if(tab==="yt"&&MODES.yt[mode]==="Thumbnail")doThumb(url);
+  else doVideo(url);
+};
+</script>
+</body>
+</html>
